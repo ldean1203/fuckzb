@@ -9,8 +9,10 @@ import time
 from PIL import Image
 from pyquery import PyQuery as pq
 import random
+from get import Get
 import json
 driver = webdriver.Ie()
+
 
 
 class fuckzb():
@@ -24,11 +26,7 @@ class fuckzb():
         url = 'http://58.30.224.47/platform/passport/login.aspx'
         # self.cookies = self.get(url)
         # driver.get(url)
-        driver.get(url)
-        co = driver.get_cookies()
         # print('cookies is :', co)
-        driver.add_cookie(co[0])
-        driver.get_screenshot_as_file('cookie.jpg')
         # print('cookies is ---- :', self.cookies)
 
     def con(self):
@@ -36,11 +34,10 @@ class fuckzb():
         username = 'deanliu'
         passwd = 'amber1203'
         posturl = 'http://58.30.224.47/platform/passport/login.aspx?Anthem_CallBack=true'
-        driver.get(posturl)
-        listcookies = driver.get_cookies()
-        for s_cookie in listcookies:
-            c = driver.add_cookie(s_cookie)
-            print('add_cookies -----', c)
+        # listcookies = driver.get_cookies()
+        # for s_cookie in listcookies:
+        #     c = driver.add_cookie(s_cookie)
+        #     print('add_cookies -----', c)
 
         # 构造header，一般header至少要包含一下两项。这两项是从抓到的包里分析得出的。
         headers = {
