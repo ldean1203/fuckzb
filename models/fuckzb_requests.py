@@ -50,7 +50,7 @@ class Fuckzb():
             'Accept-Encoding': 'gzip, deflate',
         }
         r = requests.get(url=url, headers=cls.headers, cookies=cls.d_cookies)
-        with open('/img/yzm.jpg', 'wb') as f:
+        with open('img/yzm.jpg', 'wb') as f:
             f.write(r.content)
 
     def log(self,name,pwd):
