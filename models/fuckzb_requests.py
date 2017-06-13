@@ -34,8 +34,8 @@ class Fuckzb():
         r = self.s.get(url=url, headers = self.headers, cookies = self.d_cookies)
         with open('img/yzm.jpg', 'wb') as f:
             f.write(r.content)
-        yzm = input(': ')
-        return yzm
+        # yzm = input(': ')
+        # return yzm
 
     @classmethod
     def yzm_cls(cls):
@@ -53,7 +53,7 @@ class Fuckzb():
         with open('static/img/yzm.jpg', 'wb') as f:
             f.write(r.content)
 
-    def log(self,name,pwd):
+    def log(self,name,pwd,yzm):
         url = 'http://erp.atitech.com.cn/platform/passport/login.aspx?Anthem_CallBack=true'
         headers = {
             'Host': 'erp.atitech.com.cn',
@@ -96,6 +96,7 @@ class Fuckzb():
             'Accept-Encoding': 'gzip, deflate',
         }
         r = self.s.get(url=url, cookies = self.d_cookies, headers = header)
+        return r.raw
 
 
     def add_zb(self, date):
