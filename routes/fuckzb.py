@@ -20,9 +20,9 @@ def index():
 
 @main.route('/getlist', methods=['POST'])
 def getlist():
-    name = request.get('name')
-    pwd = request.get('pwd')
-    yzm = request.get('yzm')
+    name = request.form.get('name')
+    pwd = request.form.get('pwd')
+    yzm = request.form.get('yzm')
     checked = f1.log(name, pwd, yzm)
     if checked == 'None':
         l = f1.get_zblist()
