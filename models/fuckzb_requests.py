@@ -1,5 +1,4 @@
 import requests
-import cookiejar
 import json
 
 class Fuckzb():
