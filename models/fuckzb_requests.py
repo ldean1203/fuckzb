@@ -2,15 +2,19 @@ import requests
 import json
 
 class Fuckzb():
-    def __init__(self, name, pwd):
-        self.name = name
-        self.pwd = pwd
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_5) AppleWebKit/603.2.4 (KHTML, like Gecko) Version/10.1.1 Safari/603.2.4',
+    }
+    r = requests.get('http://erp.atitech.com.cn/platform/passport/login.aspx', headers=headers)
+    d_cookies = requests.utils.dict_from_cookiejar(r.cookies)
+
+    def __init__(self):
         self.s = requests.session()
-        self.headers = {
-            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_5) AppleWebKit/603.2.4 (KHTML, like Gecko) Version/10.1.1 Safari/603.2.4',
-        }
-        r = self.s.get('http://erp.atitech.com.cn/platform/passport/login.aspx', headers = self.headers)
-        self.d_cookies = requests.utils.dict_from_cookiejar(r.cookies)
+        # self.headers = {
+        #     'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_5) AppleWebKit/603.2.4 (KHTML, like Gecko) Version/10.1.1 Safari/603.2.4',
+        # }
+        # r = self.s.get('http://erp.atitech.com.cn/platform/passport/login.aspx', headers = self.headers)
+        # self.d_cookies = requests.utils.dict_from_cookiejar(r.cookies)
         # self.cookie = 'Cookie:'
         # for i in self.d_cookies:
         #     self.cookie += i + '=' + self.d_cookies[i] + ';'
@@ -33,8 +37,23 @@ class Fuckzb():
         yzm = input(': ')
         return yzm
 
+    @classmethod
+    def yzm_cls(cls):
+        url = 'http://erp.atitech.com.cn/CommonPages/EOS.ValidateCode.aspx?code=1234567890'
+        header = {
+            'Host': 'erp.atitech.com.cn',
+            'Accept': 'image/png,image/svg+xml,image/*;q=0.8,*/*;q=0.5',
+            'Connection': 'keep-alive',
+            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_5) AppleWebKit/603.2.4 (KHTML, like Gecko) Version/10.1.1 Safari/603.2.4',
+            'Accept-Language': 'zh-cn',
+            'Referer': 'http://erp.atitech.com.cn/platform/passport/login.aspx',
+            'Accept-Encoding': 'gzip, deflate',
+        }
+        r = requests.get(url=url, headers=cls.header, cookies=cls.d_cookies)
+        with open('cached/yzm.jpg', 'wb') as f:
+            f.write(r.content)
 
-    def log(self):
+    def log(self,name,pwd):
         url = 'http://erp.atitech.com.cn/platform/passport/login.aspx?Anthem_CallBack=true'
         headers = {
             'Host': 'erp.atitech.com.cn',
@@ -52,7 +71,7 @@ class Fuckzb():
             'Anthem_PageMethod': 'Client_Callback',
             'Anthem_UpdatePage': 'true',
             # '__CLIENTPOSTDATA': 'platform_login%7CLogin%7CS%3A%3BS%3A'+ self.name +'%3BS%3A' + self.pwd + '%7C',
-            '__CLIENTPOSTDATA': 'platform_login|Login|S:;S:' + self.name + ';S:' + self.pwd + '|',
+            '__CLIENTPOSTDATA': 'platform_login|Login|S:;S:' + name + ';S:' + pwd + '|',
             '__EVENTTARGET': '',
             '__EVENTARGUMENT': '',
             # '__VIEWSTATE': '%2FwEPDwUJNTcyNDc5NTA3ZGSz3AtbmMvyRZeJPN43n2iVgAUaMg%3D%3D',
