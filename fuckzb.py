@@ -1,6 +1,7 @@
-from flask import Flask, template_rendered, url_for, request
+from flask import Flask, template_rendered, url_for, request, Blueprint
 
-app = Flask(__name__)
-@app.route('/fuckzb')
+fuckzb = Blueprint('fuckzb','__name__')
+
+@fuckzb.route('/')
 def index():
     return template_rendered('fuckzb_index.html')
