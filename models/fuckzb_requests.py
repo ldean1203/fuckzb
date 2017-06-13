@@ -49,7 +49,7 @@ class Fuckzb():
             'Referer': 'http://erp.atitech.com.cn/platform/passport/login.aspx',
             'Accept-Encoding': 'gzip, deflate',
         }
-        r = requests.get(url=url, headers=cls.header, cookies=cls.d_cookies)
+        r = requests.get(url=url, headers=cls.headers, cookies=cls.d_cookies)
         with open('cached/yzm.jpg', 'wb') as f:
             f.write(r.content)
 
