@@ -20,12 +20,13 @@ def index():
 
 @main.route('/getlist', methods=['POST'])
 def getlist():
-    name = request.form.get('name')
-    pwd = request.form.get('pwd')
-    yzm = request.form.get('yzm')
+    name = request.form.get('name', '')
+    pwd = request.form.get('pwd', '')
+    yzm = request.form.get('yzm', '')
     checked = f1.log(name, pwd, yzm)
     if checked == 'None':
         l = f1.get_zblist()
         return render_template('add_zb.html', l = l)
     else:
-        return redirect(url_for('/'))
+        print(checked)
+        return redirect(url_for('.index'))

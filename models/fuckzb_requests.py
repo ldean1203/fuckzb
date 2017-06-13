@@ -1,6 +1,7 @@
 import requests
 import json
 from bs4 import BeautifulSoup
+import random
 
 class Fuckzb():
     headers = {
@@ -21,8 +22,29 @@ class Fuckzb():
         #     self.cookie += i + '=' + self.d_cookies[i] + ';'
         # self.cookie = self.cookie[:-1]
 
+    # @classmethod
+    # def yzm(cls):
+    #     code = random.randint(1000000000,9999999999)
+    #     url = 'http://erp.atitech.com.cn/CommonPages/EOS.ValidateCode.aspx?code={}'.format(code,)
+    #     print(url)
+    #     header = {
+    #         'Host': 'erp.atitech.com.cn',
+    #         'Accept': 'image/png,image/svg+xml,image/*;q=0.8,*/*;q=0.5',
+    #         'Connection': 'keep-alive',
+    #         'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_5) AppleWebKit/603.2.4 (KHTML, like Gecko) Version/10.1.1 Safari/603.2.4',
+    #         'Accept-Language': 'zh-cn',
+    #         'Referer': 'http://erp.atitech.com.cn/platform/passport/login.aspx',
+    #         'Accept-Encoding': 'gzip, deflate',
+    #     }
+    #     r = requests.get(url=url, headers = cls.headers, cookies = cls.d_cookies)
+    #     with open('static/img/yzm.jpg', 'wb') as f:
+    #         f.write(r.content)
+    #     # yzm = input(': ')
+    #     # return yzm
+
     def yzm(self):
-        url = 'http://erp.atitech.com.cn/CommonPages/EOS.ValidateCode.aspx?code=1234567890'
+        code = random.randint(1000000000,9999999999)
+        url = 'http://erp.atitech.com.cn/CommonPages/EOS.ValidateCode.aspx?code={}'.format(code,)
         header = {
             'Host': 'erp.atitech.com.cn',
             'Accept': 'image/png,image/svg+xml,image/*;q=0.8,*/*;q=0.5',
@@ -37,7 +59,6 @@ class Fuckzb():
             f.write(r.content)
         # yzm = input(': ')
         # return yzm
-
 
     def yzm_local(self):
         url = 'http://erp.atitech.com.cn/CommonPages/EOS.ValidateCode.aspx?code=1234567890'
@@ -58,32 +79,20 @@ class Fuckzb():
 
     def log(self,name,pwd,yzm):
         url = 'http://erp.atitech.com.cn/platform/passport/login.aspx?Anthem_CallBack=true'
-        headers = {
-            'Host': 'erp.atitech.com.cn',
-            'Accept': '*/*',
-            'Accept-Encoding': 'gzip, deflate',
-            'Accept-Language': 'zh-cn',
-            'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-            'Origin': 'http://erp.atitech.com.cn',
-            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_5) AppleWebKit/603.2.4 (KHTML, like Gecko) Version/10.1.1 Safari/603.2.4',
-            'Connection': 'keep-alive',
-            'Referer': 'http://erp.atitech.com.cn/platform/passport/login.aspx',
-            'Content-Length': '336',
-        }
         data = {
             'Anthem_PageMethod': 'Client_Callback',
             'Anthem_UpdatePage': 'true',
             # '__CLIENTPOSTDATA': 'platform_login%7CLogin%7CS%3A%3BS%3A'+ self.name +'%3BS%3A' + self.pwd + '%7C',
-            '__CLIENTPOSTDATA': 'platform_login|Login|S:;S:' + name + ';S:' + pwd + '|',
+            '__CLIENTPOSTDATA': 'platform_login|Login|S:;S:{};S:{}|'.format(name, pwd),
             '__EVENTTARGET': '',
             '__EVENTARGUMENT': '',
             # '__VIEWSTATE': '%2FwEPDwUJNTcyNDc5NTA3ZGSz3AtbmMvyRZeJPN43n2iVgAUaMg%3D%3D',
             '__VIEWSTATE': '/wEPDwUJNTcyNDc5NTA3ZGSz3AtbmMvyRZeJPN43n2iVgAUaMg==',
             '__VIEWSTATEGENERATOR': 'F05B9FE7',
-            # 'ctl00$content$platform_login$validatebox_validateInputControl': self.yzm(),
+            'ctl00$content$platform_login$validatebox_validateInputControl': yzm,
         }
-        data['ctl00$content$platform_login$validatebox_validateInputControl'] = self.yzm()
-        r = self.s.post(url=url, headers=self.headers, data=data, cookies = self.d_cookies)
+        # data['ctl00$content$platform_login$validatebox_validateInputControl'] = yzm
+        r = requests.post(url=url, headers=self.headers, data=data, cookies = self.d_cookies)
         return json.loads(r.text)['value']
 
     def log_local(self,name,pwd):
