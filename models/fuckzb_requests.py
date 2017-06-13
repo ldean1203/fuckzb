@@ -32,7 +32,7 @@ class Fuckzb():
             'Accept-Encoding': 'gzip, deflate',
         }
         r = self.s.get(url=url, headers = self.headers, cookies = self.d_cookies)
-        with open('img/yzm.jpg', 'wb') as f:
+        with open('static/img/yzm.jpg', 'wb') as f:
             f.write(r.content)
         # yzm = input(': ')
         # return yzm
