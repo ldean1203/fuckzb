@@ -1,6 +1,6 @@
 import requests
 import json
-from pyquery import PyQuery as pq
+from bs4 import BeautifulSoup
 
 class Fuckzb():
     headers = {
@@ -128,8 +128,8 @@ class Fuckzb():
             'Accept-Encoding': 'gzip, deflate',
         }
         r = requests.get(url=url, cookies = self.d_cookies, headers = self.headers)
-        e = pq('<table class="eosAjaxGrid" align="center" cellpadding="4" cellspacing="0" border="1" bordercolordark="white" bordercolorlight="#ccccff">')
-        l = [i for i in e('.eosAjaxGridItem')]
+        e = BeautifulSoup()
+        l = e.find_all("tr", class_='eosAjaxGridItem')
         return l
 
 

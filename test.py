@@ -1,6 +1,6 @@
-from pyquery import PyQuery as pq
+from bs4 import BeautifulSoup
 
-e = pq(filename='1.html')
 
-for i in e('.eosAjaxGridItem'):
-    s = [j for j in i]
+e = BeautifulSoup(open('1.html'))
+l =e.find_all("tr", class_='eosAjaxGridItem')
+print(l)
