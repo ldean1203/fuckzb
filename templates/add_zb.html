@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>add</title>
+</head>
+<body>
+    <div>
+        <form>
+            日期：<input type="text" name="date">
+            内容：<input type="text" name="content">
+            <button type="submit">添加</button>
+        </form>
+    </div>
+    <div>
+        {% for i in l %}
+            {{ i }}
+        {% endfor %}
+    </div>
+</body>
+</html>

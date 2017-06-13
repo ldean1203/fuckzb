@@ -1,0 +1,295 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head><title>
+	日志查询
+</title><link type="text/css" href="../../Css/EOS.Style.css" rel="stylesheet" />
+    <script type="text/javascript" src="../../Scripts/EOS.Common.js" charset="gb2312"></script>
+    <script type="text/javascript" src="../../Scripts/CheckInput.js" charset="gb2312"></script>
+    <script type="text/javascript" src="../../Scripts/EOS.WebControls.js" charset="gb2312"></script>
+    <script type="text/javascript" src="../../Scripts/EOS.DTPicker.js" charset="gb2312"></script>
+</head>
+<body topmargin="3" leftmargin="2" rightmargin="2">
+    <form name="aspnetForm" method="post" action="prj_mainworklogquery_List.aspx?OBJID=389012f1-384f-447c-98ee-b2d32d0e44e9" id="aspnetForm">
+<div>
+<input type="hidden" name="__CLIENTPOSTDATA" id="__CLIENTPOSTDATA" value="" />
+<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwUKLTQ0NDU3NzAwNQ9kFgJmD2QWAgIDD2QWBAIBDw8WAh4FTG9nZWRnZBYCZg8PFgIeBFRleHQFrQHmioDmnK/ml6Xlv5cgLT4gPGEgaHJlZj0iLi4vLi4vaXNzL2hyX3RlY2hsb2cvcHJqX21haW53b3JrbG9ncXVlcnlfTGlzdC5hc3B4P09CSklEPTM4OTAxMmYxLTM4NGYtNDQ3Yy05OGVlLWIyZDMyZDBlNDRlOSIgdGl0bGU9IuaXpeW/l+afpeivoiIgdGFyZ2V0PSJfc2VsZiI+5pel5b+X5p+l6K+iPC9hPmRkAgMPZBYCAgEPZBYCZg9kFggCAQ8PFgIfAWVkZAICDxBkZBYBZmQCAw8PFgIfAWVkZAIEDw8WAh8BZWRkZJQN25b+3YmXe2/OXmB79HEif93W" />
+</div>
+
+<script type="text/javascript">
+//<![CDATA[
+var Anthem_FormID = "aspnetForm";
+//]]>
+</script>
+<script src="/WebResource.axd?d=xb4YCUb1mc-IXeg7FHTINj1awUDzR7IwLbPjgJnZ-mxk-y_Hd25W35XNzH-vVdqRqQCuPSum61CoKcKHZgPZnf3A5aEE9MIm-80XWVyT5oUqXY5_0&amp;t=633692633600000000" type="text/javascript"></script>
+<div>
+
+	<input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="D9CBD2A7" />
+</div>
+    <table width="100%" border="0" cellpadding="2" cellspacing="0" align="center">
+        <tr id="trNav">
+            <td>
+                <table border="0" cellpadding="2" width="100%">
+                    <tr>
+                         <td height="30" style="padding-left: 5px; border-right: #ff99ff 1px dashed; border-top: #ff99ff 1px dashed; border-left: #ff99ff 1px dashed; border-bottom: #ff99ff 1px dashed;">
+
+<script type="text/javascript">
+    function openhelp(){
+        var url = "help.mht"
+	var maxWidth = MAXW - 10;
+	var maxHeight = MAXH - 30;
+	var left = (maxWidth - 950)/2;
+	var top = (maxHeight - 500)/2;
+window.open(url,'problem',"directories=no,toolbar=no,scrollbars=yes,height=500,width=950,resizable=yes,top="+top+",left="+left);
+    }
+
+    function addFavorite(){
+        ajax('E1', 'AddFavorite', null, favorite_callback);
+    }
+    function favorite_callback(rv){
+        if (rv.error == null) alert('加入成功！');
+        else alert(rv.error);
+    }
+    function _tj_problem(){
+	var url = '../../Platform/Problem/info_problem2_list.aspx?OBJID=389012f1-384f-447c-98ee-b2d32d0e44e9';
+	var maxWidth = MAXW - 10;
+	var maxHeight = MAXH - 30;
+	var left = (maxWidth - 950)/2;
+	var top = (maxHeight - 500)/2;
+	window.open(url,'problem',"directories=no,toolbar=no,scrollbars=yes,height=500,width=950,resizable=yes,top="+top+",left="+left);
+    }
+</script>
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+    <tr>
+        <td>当前位置：<span id="Anthem_ctl00_E1_lblPosition__"><span id="ctl00_E1_lblPosition">技术日志 -> <a href="../../iss/hr_techlog/prj_mainworklogquery_List.aspx?OBJID=389012f1-384f-447c-98ee-b2d32d0e44e9" title="日志查询" target="_self">日志查询</a></span></span></td>
+        <td align="right"  width="50%"><a title="系统问题登记" href="javascript:_tj_problem();">系统问题登记</a>&nbsp;<a href="javascript:openhelp()" title="打开帮助"><img src="../../images/favorite.gif" height="20" align="absmiddle" border="0" />打开帮助</a>&nbsp;</td>
+    </tr>
+</table>
+</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td>
+    <script type="text/javascript">
+        //	function event_g_prj_worklog_RZ(pk,fk,v){
+        //		var url="prj_worklog_AddOrEdit.aspx?PK=&Plan_ID=" + pk + "&Project_ID=" + v;
+        //		ctlAddOrEdit("g_prj_worklog", url);
+        //	}
+
+        function event_g_prj_worklog_FZ(pk) {
+            ctlAddOrEdit('g_prj_worklog', 'prj_worklog_AddOrEdit1.aspx?PK=' + pk)
+        }
+
+
+        function tj() {
+            var sels = ctlAjaxGridGetSelected("g_prj_worklog");
+            if (sels != "") {
+                sels = sels.replace(/(,)/g, '*');
+                ajax("e_sql", "Exec", "S:" + sels, fz_callback);
+            }
+        }
+        function fz_callback(rv) {
+            if (rv.error == null) {
+                ajaxCallback("g_prj_worklog", "BindData");
+            }
+        }
+
+
+        function newGuid() {
+            var guid = "";
+            for (var i = 1; i <= 32; i++) {
+                var n = Math.floor(Math.random() * 16.0).toString(16);
+                guid += n;
+                if ((i == 8) || (i == 12) || (i == 16) || (i == 20))
+                    guid += "-";
+            }
+            return guid;
+        }
+
+        function add() {
+            var guid = newGuid();
+
+            ajax('e_addsql', 'Exec', 'S:' + guid,
+	    function (rv) {
+	        if (rv.error == null) {
+	            //var r=ctlAddOrEdit('g_prj_worklog', 'prj_mainworklog_AddOrEdit.aspx?PK='+guid,800,500);
+	            var r = pageShowDialog('prj_mainworklog_AddOrEdit.aspx?PK=' + guid, 800, 500);
+	            //window.open('prj_mainworklog_AddOrEdit.aspx?PK='+guid);
+	            if (r != "1") {
+
+	                ajax('e_deletesql', 'Exec', 'S:' + guid, del_callback);
+	            }
+	            else {
+	                ajaxCallback("g_prj_worklog", "BindData");
+	            }
+	        }
+	        else alert(rv.error);
+	    });
+
+        }
+        function del_callback(rv) {
+            if (rv.error == null) {
+            }
+        }
+
+        function event_g_prj_worklog_MODIFY(pk) {
+            ctlAddOrEdit('g_prj_worklog', 'prj_mainworklog_AddOrEdit.aspx?PK=' + pk, 800, 500);
+        }
+
+        function event_g_prj_worklog_BROW(pk) {
+            ctlAddOrEdit('g_prj_worklog', 'prj_mainworklog_Browse.aspx?PK=' + pk, 800, 500);
+        }
+
+        function event_g_prj_worklog_DEL(pk) {
+
+            ajax('e_deletesql', 'Exec', 'S:' + pk,
+	    function (rv) {
+	        if (rv.error == null) { alert('删除成功！'); ajaxCallback("g_prj_worklog", "binddata"); }
+	        else alert(rv.error);
+	    });
+
+        }
+
+    </script>
+    <table border="0" cellpadding="2" width="100%">
+        <tr>
+            <td>
+                <table cellpadding="5" cellspacing="0" border="1" align="center" width="100%" bordercolordark="white"
+                    bordercolorlight="#ccccff">
+                    <tr>
+                        <td height="30">
+                            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                                <tr>
+                                    <td>
+                                        <div id="Anthem_ctl00_content_s_prj_worklog__">
+日期：<span id="ctl00_content_s_prj_worklog_s_prj_worklog_dt_Date"><input name="ctl00$content$s_prj_worklog$s_prj_worklog$dt_Date_Start" type="text" id="ctl00_content_s_prj_worklog_s_prj_worklog_dt_Date_Start" style="width:75px;" /><input type=button value="…" onclick="new DateControl20(ctl00_content_s_prj_worklog_s_prj_worklog_dt_Date_Start)"> 至 <input name="ctl00$content$s_prj_worklog$s_prj_worklog$dt_Date_End" type="text" id="ctl00_content_s_prj_worklog_s_prj_worklog_dt_Date_End" style="width:75px;" /><input type=button value="…" onclick="new DateControl20(ctl00_content_s_prj_worklog_s_prj_worklog_dt_Date_End)"></span>&nbsp;
+填写人：<input name="ctl00$content$s_prj_worklog$s_prj_worklog$e_Name" type="text" id="ctl00_content_s_prj_worklog_s_prj_worklog_e_Name" style="width:60px;" />&nbsp;
+
+状态:<select name="ctl00$content$s_prj_worklog$s_prj_worklog$e_logstate" id="ctl00_content_s_prj_worklog_s_prj_worklog_e_logstate">
+	<option selected="selected" value=""></option>
+	<option value="0">待提交</option>
+	<option value="1">待经理审批</option>
+	<option value="2">待行政审核</option>
+	<option value="3">通过</option>
+	<option value="4">未通过</option>
+
+</select>
+登陆名：<input name="ctl00$content$s_prj_worklog$s_prj_worklog$e_id" type="text" id="ctl00_content_s_prj_worklog_s_prj_worklog_e_id" style="width:60px;" />
+项目号：<input name="ctl00$content$s_prj_worklog$s_prj_worklog$e_prj" type="text" id="ctl00_content_s_prj_worklog_s_prj_worklog_e_prj" style="width:100px;" />
+<a href="javascript:ctlSearch('s_prj_worklog')" title="搜索">搜索</a></div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div id="Anthem_ctl00_content_g_prj_worklog__"><script language="javascript"> var g_prj_worklog_count = 10 - 1 + 1; </script>
+<iframe id="frm_g_prj_worklog" style="display: none;"></iframe>
+<input id="hid_g_prj_worklog" value="logstates!%3d'%b4%fd%cc%e1%bd%bb'+and+(userid%3d'deanliu'+OR+userid+in+(select+loginname+from+St_Station_Person_View+a+where+stationType%3d'1'+and+exists+(select+1+from+St_Station_Person_View+b+where+LoginName%3d'deanliu'+and+StationType%3d'1'+and+a.StationCode+like+b.StationCode%2b'%25'+and+a.StationCode!%3db.StationCode)))" type="hidden" />
+<table class="eosAjaxGrid" align="center" cellpadding="4" cellspacing="0" border="1" bordercolordark="white" bordercolorlight="#ccccff">
+  <tr class="eosAjaxGridHeader">
+    <td width="1"><input type="checkbox" id="g_prj_worklog_all" onclick="ctlAjaxGridCheckAll(this,'g_prj_worklog')"></td><td width="30">序号</td><td width="50">填写人</td><td width="65">日期</td><td width="70">工作时间</td><td width="*">项目</td><td width="*">内容</td><td width="55">状态</td><td width="55">有效时间</td><td width="55">项目时间</td><td width="55">加班时间</td>
+  </tr>
+  <tr class="eosAjaxGridItem" onmouseover="DoOver(this)" onmouseout="DoOut(this)">
+    <td><input type="checkbox" name="g_prj_worklog_item" value="8fceeaac-3ef5-4883-87f5-c4b1698c80a6" onclick="ctlAjaxGridCheckItem(this,'g_prj_worklog')"></td><td>1</td><td>刘迪</td><td>2017-06-09</td><td>09:00~18:00</td><td>中国邮政储蓄银行股份有限公司-中国邮政储蓄银行邮政金融计算机系统硬件设备维护服务采购合同-16-2207</td><td>驻场</td><td>待行政审核</td><td>0.00</td><td>9.00</td><td>0.00</td>
+  </tr>
+  <tr class="eosAjaxGridItem" onmouseover="DoOver(this)" onmouseout="DoOut(this)">
+    <td><input type="checkbox" name="g_prj_worklog_item" value="90e025ce-a63f-473c-bd9d-706b62021508" onclick="ctlAjaxGridCheckItem(this,'g_prj_worklog')"></td><td>2</td><td>刘迪</td><td>2017-06-08</td><td>09:00~18:00</td><td>中国邮政储蓄银行股份有限公司-中国邮政储蓄银行邮政金融计算机系统硬件设备维护服务采购合同-16-2207</td><td>驻场</td><td>待行政审核</td><td>0.00</td><td>9.00</td><td>0.00</td>
+  </tr>
+  <tr class="eosAjaxGridItem" onmouseover="DoOver(this)" onmouseout="DoOut(this)">
+    <td><input type="checkbox" name="g_prj_worklog_item" value="95848430-b34b-46b8-ba3f-843f92371c60" onclick="ctlAjaxGridCheckItem(this,'g_prj_worklog')"></td><td>3</td><td>刘迪</td><td>2017-06-07</td><td>09:00~18:00</td><td>中国邮政储蓄银行股份有限公司-中国邮政储蓄银行邮政金融计算机系统硬件设备维护服务采购合同-16-2207</td><td>驻场</td><td>待行政审核</td><td>0.00</td><td>9.00</td><td>0.00</td>
+  </tr>
+  <tr class="eosAjaxGridItem" onmouseover="DoOver(this)" onmouseout="DoOut(this)">
+    <td><input type="checkbox" name="g_prj_worklog_item" value="fbc7080f-42cf-419e-9d90-9ad43d4bb41b" onclick="ctlAjaxGridCheckItem(this,'g_prj_worklog')"></td><td>4</td><td>刘迪</td><td>2017-06-06</td><td>09:00~18:00</td><td>中国邮政储蓄银行股份有限公司-中国邮政储蓄银行邮政金融计算机系统硬件设备维护服务采购合同-16-2207</td><td>调休</td><td>待行政审核</td><td>0.00</td><td>0.00</td><td>0.00</td>
+  </tr>
+  <tr class="eosAjaxGridItem" onmouseover="DoOver(this)" onmouseout="DoOut(this)">
+    <td><input type="checkbox" name="g_prj_worklog_item" value="37f0e6f0-0cc4-43e3-bc2e-fbe2c270a399" onclick="ctlAjaxGridCheckItem(this,'g_prj_worklog')"></td><td>5</td><td>刘迪</td><td>2017-06-05</td><td>09:00~22:00</td><td>中国邮政储蓄银行股份有限公司-中国邮政储蓄银行邮政金融计算机系统硬件设备维护服务采购合同-16-2207</td><td>渠道丰台联机库部署DG、传全备</td><td>待经理审批</td><td>0.00</td><td>13.00</td><td>4.00</td>
+  </tr>
+  <tr class="eosAjaxGridItem" onmouseover="DoOver(this)" onmouseout="DoOut(this)">
+    <td><input type="checkbox" name="g_prj_worklog_item" value="becbbcee-017d-4ec1-8ecf-c884133eb1bc" onclick="ctlAjaxGridCheckItem(this,'g_prj_worklog')"></td><td>6</td><td>刘迪</td><td>2017-06-02</td><td>09:00~22:00</td><td>中国邮政储蓄银行股份有限公司-中国邮政储蓄银行邮政金融计算机系统硬件设备维护服务采购合同-16-2207</td><td>客户身份核查web1重启升级光纤卡驱动和固件</td><td>待经理审批</td><td>0.00</td><td>13.00</td><td>4.00</td>
+  </tr>
+  <tr class="eosAjaxGridItem" onmouseover="DoOver(this)" onmouseout="DoOut(this)">
+    <td><input type="checkbox" name="g_prj_worklog_item" value="f523348f-cfc5-4f1e-b94a-dc8b91ba81fc" onclick="ctlAjaxGridCheckItem(this,'g_prj_worklog')"></td><td>7</td><td>刘迪</td><td>2017-06-01</td><td>09:00~18:00</td><td>中国邮政储蓄银行股份有限公司-中国邮政储蓄银行邮政金融计算机系统硬件设备维护服务采购合同-16-2207</td><td>驻场</td><td>待行政审核</td><td>0.00</td><td>9.00</td><td>0.00</td>
+  </tr>
+  <tr class="eosAjaxGridItem" onmouseover="DoOver(this)" onmouseout="DoOut(this)">
+    <td><input type="checkbox" name="g_prj_worklog_item" value="832f6948-5739-46a2-b44d-a22f723f132d" onclick="ctlAjaxGridCheckItem(this,'g_prj_worklog')"></td><td>8</td><td>刘迪</td><td>2017-05-31</td><td>09:00~18:00</td><td>中国邮政储蓄银行股份有限公司-中国邮政储蓄银行邮政金融计算机系统硬件设备维护服务采购合同-16-2207</td><td>驻场</td><td>待行政审核</td><td>0.00</td><td>9.00</td><td>0.00</td>
+  </tr>
+  <tr class="eosAjaxGridItem" onmouseover="DoOver(this)" onmouseout="DoOut(this)">
+    <td><input type="checkbox" name="g_prj_worklog_item" value="31ce646f-a039-4bc6-b70d-6276fe1d1838" onclick="ctlAjaxGridCheckItem(this,'g_prj_worklog')"></td><td>9</td><td>刘迪</td><td>2017-05-27</td><td>09:00~18:00</td><td>中国邮政储蓄银行股份有限公司-中国邮政储蓄银行邮政金融计算机系统硬件设备维护服务采购合同-16-2207</td><td>驻场</td><td>待行政审核</td><td>0.00</td><td>9.00</td><td>0.00</td>
+  </tr>
+  <tr class="eosAjaxGridItem" onmouseover="DoOver(this)" onmouseout="DoOut(this)">
+    <td><input type="checkbox" name="g_prj_worklog_item" value="1a23dac6-f6e1-4335-a0c6-a08892b9405a" onclick="ctlAjaxGridCheckItem(this,'g_prj_worklog')"></td><td>10</td><td>刘迪</td><td>2017-05-26</td><td>09:00~18:00</td><td>中国邮政储蓄银行股份有限公司-中国邮政储蓄银行邮政金融计算机系统硬件设备维护服务采购合同-16-2207</td><td>驻场</td><td>待行政审核</td><td>0.00</td><td>9.00</td><td>0.00</td>
+  </tr>
+  <tr class="eosAjaxGridPaging">
+    <td colspan="11">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td align="left">
+            <a title="第一页" Disabled="Disabled"><img src="../../images/pg-first.gif" border="0" /></a>
+            <a title="上一页" Disabled="Disabled"><img src="../../images/pg-prev.gif" border="0" /></a>
+            <a title="下一页" href="javascript:ctlAjaxGrid('g_prj_worklog','GoPage','2')"><img src="../../images/pg-next.gif" border="0" /></a>
+            <a title="末一页" href="javascript:ctlAjaxGrid('g_prj_worklog','GoPage','36')"><img src="../../images/pg-last.gif" border="0" /></a>&nbsp;
+	    <img style="cursor: hand" src="../../images/excel.png" alt="导出Excel(*.xls)文件" onclick="javascript:ctlAjaxGridExcel('g_prj_worklog')" />
+          </td>
+          <td align="center">共 36 页，记录 357 条，当前 1 - 10 条</td>
+          <td align="right">每页显示<input id="g_prj_worklog_Size" onchange="ctlAjaxGrid('g_prj_worklog','ReBind',this.value)" size="3" style="width:30px" value="10" />条，转到第<select id="g_prj_worklog_Page" onchange="ctlAjaxGrid('g_prj_worklog','GoPage',this.value)">
+            <option value="1" selected="selected">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+            <option value="11">11</option>
+            <option value="12">12</option>
+            <option value="13">13</option>
+            <option value="14">14</option>
+            <option value="15">15</option>
+            <option value="16">16</option>
+            <option value="17">17</option>
+            <option value="18">18</option>
+            <option value="19">19</option>
+            <option value="20">20</option>
+            <option value="21">21</option>
+            <option value="22">22</option>
+            <option value="23">23</option>
+            <option value="24">24</option>
+            <option value="25">25</option>
+            <option value="26">26</option>
+            <option value="27">27</option>
+            <option value="28">28</option>
+            <option value="29">29</option>
+            <option value="30">30</option>
+            <option value="31">31</option>
+            <option value="32">32</option>
+            <option value="33">33</option>
+            <option value="34">34</option>
+            <option value="35">35</option>
+            <option value="36">36</option>
+          </select>页</td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table></div>
+            </td>
+        </tr>
+    </table>
+</td>
+        </tr>
+    </table>
+    </form>
+    <script language="javascript">
+        document.getElementById('trNav').style.display = window.location.href.getQuery('NAV') == "NO" ? "none" : "block";
+    </script>
+</body>
+</html>

@@ -23,5 +23,6 @@ def getlist():
     name = request.get('name')
     pwd = request.get('pwd')
     yzm = request.get('yzm')
-    f1.log(name, pwd,yzm)
-    return f1.get_zblist()
+    f1.log(name, pwd, yzm)
+    l = f1.get_zblist()
+    return render_template('add_zb.html', l = l)

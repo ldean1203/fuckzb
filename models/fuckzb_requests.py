@@ -1,5 +1,6 @@
 import requests
 import json
+from pyquery import PyQuery as pq
 
 class Fuckzb():
     headers = {
@@ -10,11 +11,11 @@ class Fuckzb():
 
     def __init__(self):
         self.s = requests.session()
-        # self.headers = {
-        #     'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_5) AppleWebKit/603.2.4 (KHTML, like Gecko) Version/10.1.1 Safari/603.2.4',
-        # }
-        # r = self.s.get('http://erp.atitech.com.cn/platform/passport/login.aspx', headers = self.headers)
-        # self.d_cookies = requests.utils.dict_from_cookiejar(r.cookies)
+        self.headers = {
+            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_5) AppleWebKit/603.2.4 (KHTML, like Gecko) Version/10.1.1 Safari/603.2.4',
+        }
+        r = self.s.get('http://erp.atitech.com.cn/platform/passport/login.aspx', headers = self.headers)
+        self.d_cookies = requests.utils.dict_from_cookiejar(r.cookies)
         # self.cookie = 'Cookie:'
         # for i in self.d_cookies:
         #     self.cookie += i + '=' + self.d_cookies[i] + ';'
@@ -37,8 +38,8 @@ class Fuckzb():
         # yzm = input(': ')
         # return yzm
 
-    @classmethod
-    def yzm_cls(cls):
+
+    def yzm_local(self):
         url = 'http://erp.atitech.com.cn/CommonPages/EOS.ValidateCode.aspx?code=1234567890'
         header = {
             'Host': 'erp.atitech.com.cn',
@@ -49,9 +50,11 @@ class Fuckzb():
             'Referer': 'http://erp.atitech.com.cn/platform/passport/login.aspx',
             'Accept-Encoding': 'gzip, deflate',
         }
-        r = requests.get(url=url, headers=cls.headers, cookies=cls.d_cookies)
-        with open('static/img/yzm.jpg', 'wb') as f:
+        r = requests.get(url=url, headers=self.headers, cookies=self.d_cookies)
+        with open('../static/img/yzm.jpg', 'wb') as f:
             f.write(r.content)
+        yzm = input(': ')
+        return yzm
 
     def log(self,name,pwd,yzm):
         url = 'http://erp.atitech.com.cn/platform/passport/login.aspx?Anthem_CallBack=true'
@@ -82,6 +85,35 @@ class Fuckzb():
         data['ctl00$content$platform_login$validatebox_validateInputControl'] = self.yzm()
         r = self.s.post(url=url, headers=self.headers, data=data, cookies = self.d_cookies)
 
+    def log_local(self,name,pwd):
+        url = 'http://erp.atitech.com.cn/platform/passport/login.aspx?Anthem_CallBack=true'
+        headers = {
+            'Host': 'erp.atitech.com.cn',
+            'Accept': '*/*',
+            'Accept-Encoding': 'gzip, deflate',
+            'Accept-Language': 'zh-cn',
+            'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+            'Origin': 'http://erp.atitech.com.cn',
+            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_5) AppleWebKit/603.2.4 (KHTML, like Gecko) Version/10.1.1 Safari/603.2.4',
+            'Connection': 'keep-alive',
+            'Referer': 'http://erp.atitech.com.cn/platform/passport/login.aspx',
+            'Content-Length': '336',
+        }
+        data = {
+            'Anthem_PageMethod': 'Client_Callback',
+            'Anthem_UpdatePage': 'true',
+            # '__CLIENTPOSTDATA': 'platform_login%7CLogin%7CS%3A%3BS%3A'+ self.name +'%3BS%3A' + self.pwd + '%7C',
+            '__CLIENTPOSTDATA': 'platform_login|Login|S:;S:' + name + ';S:' + pwd + '|',
+            '__EVENTTARGET': '',
+            '__EVENTARGUMENT': '',
+            # '__VIEWSTATE': '%2FwEPDwUJNTcyNDc5NTA3ZGSz3AtbmMvyRZeJPN43n2iVgAUaMg%3D%3D',
+            '__VIEWSTATE': '/wEPDwUJNTcyNDc5NTA3ZGSz3AtbmMvyRZeJPN43n2iVgAUaMg==',
+            '__VIEWSTATEGENERATOR': 'F05B9FE7',
+            # 'ctl00$content$platform_login$validatebox_validateInputControl': self.yzm(),
+        }
+        data['ctl00$content$platform_login$validatebox_validateInputControl'] = self.yzm_local()
+        r = self.s.post(url=url, headers=self.headers, data=data, cookies = self.d_cookies)
+
 
     def get_zblist(self):
         url = 'http://erp.atitech.com.cn/iss/hr_techlog/prj_mainworklogquery_List.aspx?OBJID=389012f1-384f-447c-98ee-b2d32d0e44e9'
@@ -95,8 +127,10 @@ class Fuckzb():
             'Accept-Language': 'zh-cn',
             'Accept-Encoding': 'gzip, deflate',
         }
-        r = self.s.get(url=url, cookies = self.d_cookies, headers = header)
-        return r.raw
+        r = requests.get(url=url, cookies = self.d_cookies, headers = self.headers)
+        e = pq('<table class="eosAjaxGrid" align="center" cellpadding="4" cellspacing="0" border="1" bordercolordark="white" bordercolorlight="#ccccff">')
+        l = [i for i in e('.eosAjaxGridItem')]
+        return l
 
 
     def add_zb(self, date):
@@ -158,13 +192,13 @@ class Fuckzb():
         print(r.text)
 
 if __name__ == '__main__':
-    f1 = Fuckzb('deanliu','amber1203')
-    f1.log()
-    # f1.get_zblist()
+    f1 = Fuckzb()
+    f1.log_local('deanliu','amber1203')
+    f1.get_zblist()
     # f1.add_zb('2017-06-12')
     # f1.add_zb('2017-06-13')
-    f1.add_zb_detail('2017-06-12')
-    f1.add_zb_detail('2017-06-13')
-    f1.add_zb_detail('2017-06-14')
-    f1.add_zb_detail('2017-06-15')
-    f1.add_zb_detail('2017-06-16')
+    # f1.add_zb_detail('2017-06-12')
+    # f1.add_zb_detail('2017-06-13')
+    # f1.add_zb_detail('2017-06-14')
+    # f1.add_zb_detail('2017-06-15')
+    # f1.add_zb_detail('2017-06-16')
