@@ -32,8 +32,12 @@ def login():
 
 @main.route("/getlist")
 def getlist():
-    l = f1.get_zblist()
+    l = f1.get_addlist()
     return render_template('add_zb.html', l=l)
+
+@main.route("delete", methods=["POST"])
+def delete():
+    return redirect(url_for('.getlist'))
 
 @main.route("/add", methods=["POST"])
 def add():

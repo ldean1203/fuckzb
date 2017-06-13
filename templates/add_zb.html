@@ -16,13 +16,11 @@
     <div>
         <table class="table">
             <tbody>
-            <tr >
-    <td width="30">序号</td><td width="50">填写人</td><td width="65">日期</td><td width="70">工作时间</td><td width="*">项目</td><td width="*">内容</td><td width="55">状态</td><td width="55">有效时间</td><td width="55">项目时间</td><td width="55">加班时间</td>
+           <tr>
+               <td width="30">序号</td><td width="UNSORT">操作</td><td width="*">状态</td><td width="*">填写人</td><td width="*">日期</td><td width="*">工时</td><td width="*">加班工时</td><td width="*">内容</td><td width="*">审批时间</td><td width="*">审批意见</td><td width="*">审批人</td>
   </tr>
             {% for i in l %}
                 <tr>
-                    <td>{{ i[0] }}</td>
-                    <td>{{ i[1] }}</td>
                     <td>{{ i[2] }}</td>
                     <td>{{ i[3] }}</td>
                     <td>{{ i[4] }}</td>
@@ -31,6 +29,9 @@
                     <td>{{ i[7] }}</td>
                     <td>{{ i[8] }}</td>
                     <td>{{ i[9] }}</td>
+                    <td>{{ i[10] }}</td>
+                    <td>{{ i[11] }}</td>
+                    <td>{{ i[10] }}</td>
                 </tr>
             {% endfor %}
             </tbody>

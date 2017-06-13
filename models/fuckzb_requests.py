@@ -144,6 +144,43 @@ class Fuckzb():
         all_contents = [[j.string for j in i.contents][2:-1] for i in l]
         return all_contents
 
+    def get_addlist(self):
+        url = 'http://erp.atitech.com.cn/iss/hr_techlog/prj_mainworklog_List.aspx?OBJID=5be9513b-4816-4864-952e-87779f9dcef4'
+        header = {
+            'Host': 'erp.atitech.com.cn',
+            'Connection': 'keep-alive',
+            'Upgrade-Insecure-Requests': '1',
+            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_5) AppleWebKit/603.2.4 (KHTML, like Gecko) Version/10.1.1 Safari/603.2.4',
+            'Referer': 'http://erp.atitech.com.cn/platform/portal2/index.aspx',
+            'Accept-Language': 'zh-cn',
+            'Accept-Encoding': 'gzip, deflate',
+        }
+        r = requests.get(url=url, cookies = self.d_cookies, headers = self.headers)
+        e = BeautifulSoup(r.text)
+        l = e.find_all("tr", class_='eosAjaxGridItem')
+        all_contents = [[j.string for j in i.contents] for i in l]
+        return all_contents
+
+    def delete_zb(self):
+        url = 'http://erp.atitech.com.cn/iss/hr_techlog/prj_mainworklog_List.aspx?OBJID=5be9513b-4816-4864-952e-87779f9dcef4&Anthem_CallBack=true'
+        data = {
+            'Anthem_PageMethod': 'Execute',
+            'Anthem_UpdatePage': 'true',
+            # '__CLIENTPOSTDATA': 'e_deletesql%7CExec%7CS%3Aea538a2f-ffa8-4e0a-a588-c600b87b895f',
+            '__CLIENTPOSTDATA': 'e_deletesql|Exec|S:ea538a2f-ffa8-4e0a-a588-c600b87b895f',
+            # '__VIEWSTATE': '%2FwEPDwULLTEyNzQ3NTczMzEPZBYCZg9kFgICAw9kFgQCAQ8PFgIeBUxvZ2VkZ2QWAmYPDxYCHgRUZXh0BagB5oqA5pyv5pel5b%2BXIC0%2BIDxhIGhyZWY9Ii4uLy4uL2lzcy9ocl90ZWNobG9nL3Byal9tYWlud29ya2xvZ19MaXN0LmFzcHg%2FT0JKSUQ9NWJlOTUxM2ItNDgxNi00ODY0LTk1MmUtODc3NzlmOWRjZWY0IiB0aXRsZT0i5pel5b%2BX5aGr5YaZIiB0YXJnZXQ9Il9zZWxmIj7ml6Xlv5floavlhpk8L2E%2BZGQCAw9kFgJmD2QWAmYPZBYIAgEPDxYCHwFlZGQCAg8QZGQWAWZkAgMPDxYCHwFlZGQCBA8PFgIfAWVkZGRmIjRrU2h7Od6jXlY%2FolvVG6bKSQ%3D%3D',
+            '__VIEWSTATE': '/wEPDwULLTEyNzQ3NTczMzEPZBYCZg9kFgICAw9kFgQCAQ8PFgIeBUxvZ2VkZ2QWAmYPDxYCHgRUZXh0BagB5oqA5pyv5pel5b+XIC0+IDxhIGhyZWY9Ii4uLy4uL2lzcy9ocl90ZWNobG9nL3Byal9tYWlud29ya2xvZ19MaXN0LmFzcHg/T0JKSUQ9NWJlOTUxM2ItNDgxNi00ODY0LTk1MmUtODc3NzlmOWRjZWY0IiB0aXRsZT0i5pel5b+X5aGr5YaZIiB0YXJnZXQ9Il9zZWxmIj7ml6Xlv5floavlhpk8L2E+ZGQCAw9kFgJmD2QWAmYPZBYIAgEPDxYCHwFlZGQCAg8QZGQWAWZkAgMPDxYCHwFlZGQCBA8PFgIfAWVkZGRmIjRrU2h7Od6jXlY/olvVG6bKSQ==',
+            '__VIEWSTATEGENERATOR': '43C509D3',
+            'ctl00$content$s_prj_worklog$s_prj_worklog$dt_Date_Start': '',
+            'ctl00$content$s_prj_worklog$s_prj_worklog$dt_Date_End': '',
+            'ctl00$content$s_prj_worklog$s_prj_worklog$e_Name': '',
+            'ctl00$content$s_prj_worklog$s_prj_worklog$e_logstate': '',
+            'ctl00$content$s_prj_worklog$s_prj_worklog$e_id': '',
+            'ctl00$content$s_prj_worklog$s_prj_worklog$e_prj': '',
+            '__EVENTTARGET': '',
+        }
+
 
     def add_zb(self, date):
         url = 'http://erp.atitech.com.cn/iss/hr_techlog/prj_mainworklog_AddOrEdit.aspx?DT=0.5859502467063469&Anthem_CallBack=true'
