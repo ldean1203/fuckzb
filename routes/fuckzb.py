@@ -1,7 +1,16 @@
-from flask import Flask, template_rendered, url_for, request, Blueprint
+from flask import (
+    render_template,
+    request,
+    flash,
+    redirect,
+    url_for,
+    Blueprint,
+)
 
-bpzb = Blueprint('fuckzb','__name__')
+main = Blueprint('fuckzb',__name__)
 
-@bpzb.route('/')
+
+@main.route('/')
 def index():
-    return template_rendered('fuckzb_index.html')
+    print('adfasdfasdfasfd-------------')
+    return render_template('fuckzb_index.html')
