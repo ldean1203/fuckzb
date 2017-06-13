@@ -18,11 +18,14 @@ def index():
     return render_template('fuckzb_index.html')
 
 
-@main.route('/getlist')
+@main.route('/getlist', methods=['POST'])
 def getlist():
     name = request.get('name')
     pwd = request.get('pwd')
     yzm = request.get('yzm')
-    f1.log(name, pwd, yzm)
-    l = f1.get_zblist()
-    return render_template('add_zb.html', l = l)
+    checked = f1.log(name, pwd, yzm)
+    if checked == 'None':
+        l = f1.get_zblist()
+        return render_template('add_zb.html', l = l)
+    else:
+        return redirect(url_for('/'))

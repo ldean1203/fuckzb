@@ -84,6 +84,7 @@ class Fuckzb():
         }
         data['ctl00$content$platform_login$validatebox_validateInputControl'] = self.yzm()
         r = self.s.post(url=url, headers=self.headers, data=data, cookies = self.d_cookies)
+        return json.loads(r.text)['value']
 
     def log_local(self,name,pwd):
         url = 'http://erp.atitech.com.cn/platform/passport/login.aspx?Anthem_CallBack=true'
@@ -113,6 +114,7 @@ class Fuckzb():
         }
         data['ctl00$content$platform_login$validatebox_validateInputControl'] = self.yzm_local()
         r = self.s.post(url=url, headers=self.headers, data=data, cookies = self.d_cookies)
+        print(json.loads(r.text)['value'])
 
 
     def get_zblist(self):
@@ -194,7 +196,7 @@ class Fuckzb():
 if __name__ == '__main__':
     f1 = Fuckzb()
     f1.log_local('deanliu','amber1203')
-    f1.get_zblist()
+    # f1.get_zblist()
     # f1.add_zb('2017-06-12')
     # f1.add_zb('2017-06-13')
     # f1.add_zb_detail('2017-06-12')
