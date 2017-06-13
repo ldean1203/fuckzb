@@ -23,11 +23,9 @@ def getlist():
     name = request.form.get('userid', '')
     pwd = request.form.get('pwd', '')
     yzm = request.form.get('yzm', '')
-    print(name,pwd,yzm)
     checked = f1.log(name, pwd, yzm)
-    if checked == 'None':
+    if checked == None:
         l = f1.get_zblist()
-        print(l)
         return render_template('add_zb.html')
     else:
         print(checked)

@@ -139,7 +139,7 @@ class Fuckzb():
             'Accept-Encoding': 'gzip, deflate',
         }
         r = requests.get(url=url, cookies = self.d_cookies, headers = self.headers)
-        e = BeautifulSoup()
+        e = BeautifulSoup(r.text)
         l = e.find_all("tr", class_='eosAjaxGridItem')
         return l
 
@@ -205,7 +205,7 @@ class Fuckzb():
 if __name__ == '__main__':
     f1 = Fuckzb()
     f1.log_local('deanliu','amber1203')
-    # f1.get_zblist()
+    f1.get_zblist()
     # f1.add_zb('2017-06-12')
     # f1.add_zb('2017-06-13')
     # f1.add_zb_detail('2017-06-12')
