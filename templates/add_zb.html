@@ -2,20 +2,39 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+        <link rel="stylesheet" href="/static/css/bootstrap.min.css">
     <title>add</title>
 </head>
 <body>
     <div>
-        <form>
+        <form method=post action={{ url_for(".add") }}>
             日期：<input type="text" name="date">
             内容：<input type="text" name="content">
             <button type="submit">添加</button>
         </form>
     </div>
     <div>
-        {% for i in l %}
-            {{ i }}
-        {% endfor %}
+        <table class="table">
+            <tbody>
+            <tr >
+    <td width="30">序号</td><td width="50">填写人</td><td width="65">日期</td><td width="70">工作时间</td><td width="*">项目</td><td width="*">内容</td><td width="55">状态</td><td width="55">有效时间</td><td width="55">项目时间</td><td width="55">加班时间</td>
+  </tr>
+            {% for i in l %}
+                <tr>
+                    <td>{{ i[0] }}</td>
+                    <td>{{ i[1] }}</td>
+                    <td>{{ i[2] }}</td>
+                    <td>{{ i[3] }}</td>
+                    <td>{{ i[4] }}</td>
+                    <td>{{ i[5] }}</td>
+                    <td>{{ i[6] }}</td>
+                    <td>{{ i[7] }}</td>
+                    <td>{{ i[8] }}</td>
+                    <td>{{ i[9] }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
     </div>
 </body>
 </html>

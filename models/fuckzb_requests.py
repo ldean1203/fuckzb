@@ -141,7 +141,8 @@ class Fuckzb():
         r = requests.get(url=url, cookies = self.d_cookies, headers = self.headers)
         e = BeautifulSoup(r.text)
         l = e.find_all("tr", class_='eosAjaxGridItem')
-        return l
+        all_contents = [[j.string for j in i.contents][2:-1] for i in l]
+        return all_contents
 
 
     def add_zb(self, date):
@@ -158,13 +159,11 @@ class Fuckzb():
             '__EVENTTARGET': '',
         }
         r = self.s.post(url = url , data = data , headers = self.headers, cookies = self.d_cookies)
-        print(json.loads(r.text)['value'])
-        print(json.loads(r.text)['value'][2:-1])
         return json.loads(r.text)['value'][2:-1]
 
 
 
-    def add_zb_detail(self, date):
+    def add_zb_detail(self, date, content):
         mainlog = self.add_zb(date)
         url = 'http://erp.atitech.com.cn/iss/hr_techlog/prj_SubWorklog_AddOrEdit.aspx?PK=&MAINLOG=' +  mainlog + '&DATE=' + date +'+00%3a00%3a00&DT=0.7084406246866846&Anthem_CallBack=true'
         data = {
@@ -195,7 +194,7 @@ class Fuckzb():
             'ctl00$content$v_prj_worklog$v_prj_worklog$e_sfjb': '2',
             'ctl00$content$v_prj_worklog$v_prj_worklog$e_ADDHOUR': '',
             # 'ctl00$content$v_prj_worklog$v_prj_worklog$e_MEMO': '%E9%A9%BB%E5%9C%BA',
-            'ctl00$content$v_prj_worklog$v_prj_worklog$e_MEMO': '驻场'.encode('gb2312'),
+            'ctl00$content$v_prj_worklog$v_prj_worklog$e_MEMO': content.encode('gb2312'),
             'ctl00$content$v_prj_worklog$v_prj_worklog$e5_hid': '',
             '__EVENTTARGET': '',
         }
