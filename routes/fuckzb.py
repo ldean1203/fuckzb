@@ -12,21 +12,23 @@ main = Blueprint('fuckzb',__name__)
 
 f1 = Fuckzb()
 
-@main.route('/')
+@main.route("/")
 def index():
     f1.yzm()
     return render_template('fuckzb_index.html')
 
 
-@main.route('/getlist', methods=['POST'])
+@main.route("/getlist",  methods=["POST"])
 def getlist():
-    name = request.form.get('name', '')
+    name = request.form.get('userid', '')
     pwd = request.form.get('pwd', '')
     yzm = request.form.get('yzm', '')
+    print(name,pwd,yzm)
     checked = f1.log(name, pwd, yzm)
     if checked == 'None':
         l = f1.get_zblist()
-        return render_template('add_zb.html', l = l)
+        print(l)
+        return render_template('add_zb.html')
     else:
         print(checked)
         return redirect(url_for('.index'))
