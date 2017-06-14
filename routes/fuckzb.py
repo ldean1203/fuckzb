@@ -1,3 +1,4 @@
+import openfile as openfile
 from flask import (
     render_template,
     request,
@@ -5,6 +6,7 @@ from flask import (
     redirect,
     url_for,
     Blueprint,
+    Response
 )
 import time
 from models.fuckzb_requests import Fuckzb
@@ -33,6 +35,7 @@ def login():
 @main.route("/getlist")
 def getlist():
     l = f1.get_addlist()
+    print(l)
     return render_template('add_zb.html', l=l)
 
 @main.route("/delete/<del_id>", methods=["POST", "GET"])

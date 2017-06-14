@@ -75,7 +75,7 @@ class Fuckzb():
         }
         # data['ctl00$content$platform_login$validatebox_validateInputControl'] = yzm
         r = requests.post(url=url, headers=self.headers, data=data, cookies = self.d_cookies)
-        print(r.text)
+        print("log info: ",json.loads(r.text)['value'])
         return json.loads(r.text)['value']
 
     def log_local(self,name,pwd):
@@ -106,7 +106,6 @@ class Fuckzb():
         }
         data['ctl00$content$platform_login$validatebox_validateInputControl'] = self.yzm_local()
         r = self.s.post(url=url, headers=self.headers, data=data, cookies = self.d_cookies)
-
 
     def get_zblist(self):
         url = 'http://erp.atitech.com.cn/iss/hr_techlog/prj_mainworklogquery_List.aspx?OBJID=389012f1-384f-447c-98ee-b2d32d0e44e9'
@@ -178,7 +177,6 @@ class Fuckzb():
         }
         requests.post(url = url , data = data , headers = self.headers, cookies = self.d_cookies)
 
-
     def add_zb(self, date):
         url = 'http://erp.atitech.com.cn/iss/hr_techlog/prj_mainworklog_AddOrEdit.aspx?DT=0.5859502467063469&Anthem_CallBack=true'
         data = {
@@ -193,7 +191,10 @@ class Fuckzb():
             '__EVENTTARGET': '',
         }
         r = self.s.post(url = url , data = data , headers = self.headers, cookies = self.d_cookies)
+        print("from add_zb: ",json.loads(r.text))
+
         return json.loads(r.text)['value'][2:-1]
+
 
 
 
@@ -239,6 +240,8 @@ class Fuckzb():
             '__EVENTTARGET': '',
         }
         r = self.s.post(url = url, data = data , headers = self.headers, cookies = self.d_cookies)
+        print('from zb add detail :',json.loads(r.text))
+
 
 
 if __name__ == '__main__':
