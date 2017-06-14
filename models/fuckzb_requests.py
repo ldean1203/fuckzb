@@ -23,25 +23,6 @@ class Fuckzb():
         #     self.cookie += i + '=' + self.d_cookies[i] + ';'
         # self.cookie = self.cookie[:-1]
 
-    # @classmethod
-    # def yzm(cls):
-    #     code = random.randint(1000000000,9999999999)
-    #     url = 'http://erp.atitech.com.cn/CommonPages/EOS.ValidateCode.aspx?code={}'.format(code,)
-    #     print(url)
-    #     header = {
-    #         'Host': 'erp.atitech.com.cn',
-    #         'Accept': 'image/png,image/svg+xml,image/*;q=0.8,*/*;q=0.5',
-    #         'Connection': 'keep-alive',
-    #         'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_5) AppleWebKit/603.2.4 (KHTML, like Gecko) Version/10.1.1 Safari/603.2.4',
-    #         'Accept-Language': 'zh-cn',
-    #         'Referer': 'http://erp.atitech.com.cn/platform/passport/login.aspx',
-    #         'Accept-Encoding': 'gzip, deflate',
-    #     }
-    #     r = requests.get(url=url, headers = cls.headers, cookies = cls.d_cookies)
-    #     with open('static/img/yzm.jpg', 'wb') as f:
-    #         f.write(r.content)
-    #     # yzm = input(': ')
-    #     # return yzm
 
     def yzm(self, ip):
         code = random.randint(1000000000,9999999999)
@@ -94,6 +75,7 @@ class Fuckzb():
         }
         # data['ctl00$content$platform_login$validatebox_validateInputControl'] = yzm
         r = requests.post(url=url, headers=self.headers, data=data, cookies = self.d_cookies)
+        print(r.text)
         return json.loads(r.text)['value']
 
     def log_local(self,name,pwd):
@@ -124,7 +106,6 @@ class Fuckzb():
         }
         data['ctl00$content$platform_login$validatebox_validateInputControl'] = self.yzm_local()
         r = self.s.post(url=url, headers=self.headers, data=data, cookies = self.d_cookies)
-
 
 
     def get_zblist(self):
@@ -175,7 +156,6 @@ class Fuckzb():
                     content.append(i.contents[j].string)
             if len(content) > 5:
                 all_contents.append(content)
-        # uname = e.find('td', style='padding-left:6px;padding-top:2px').font.string
         return all_contents
 
     def delete_zb(self, del_id):
