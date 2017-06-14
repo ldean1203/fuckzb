@@ -43,5 +43,7 @@ def delete():
 def add():
     date = request.form.get('date','')
     content = request.form.get('content','')
-    f1.add_zb_detail(date, content)
+    start_time = request.form.get('start_time','')
+    end_time = request.form.get('end_time','')
+    f1.add_zb_detail(date, start_time, end_time, content)
     return redirect(url_for('.getlist'))

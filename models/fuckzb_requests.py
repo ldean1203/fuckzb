@@ -159,7 +159,15 @@ class Fuckzb():
         r = requests.get(url=url, cookies = self.d_cookies, headers = self.headers)
         e = BeautifulSoup(r.text)
         l = e.find_all("tr", class_='eosAjaxGridItem')
-        all_contents = [[j.string for j in i.contents] for i in l]
+        # all_contents = [[j.string for j in i.contents] for i in l]
+        # return all_contents
+        all_contents = []
+        for i in l:
+            for j in range(len(i.contents)):
+                if j == 1 and i.contents[j].input != None:
+                    all_contents.append(i.contents[j].input['value'])
+                else:
+                    all_contents.append(i.contents[j].string)
         return all_contents
 
     def delete_zb(self):
@@ -200,7 +208,7 @@ class Fuckzb():
 
 
 
-    def add_zb_detail(self, date, content):
+    def add_zb_detail(self, date, start_time, end_time, content):
         mainlog = self.add_zb(date)
         url = 'http://erp.atitech.com.cn/iss/hr_techlog/prj_SubWorklog_AddOrEdit.aspx?PK=&MAINLOG=' +  mainlog + '&DATE=' + date +'+00%3a00%3a00&DT=0.7084406246866846&Anthem_CallBack=true'
         data = {
@@ -215,10 +223,10 @@ class Fuckzb():
             'ctl00$content$v_prj_worklog$v_prj_worklog$e_DATE': date + ' 00:00:00',
             'ctl00$content$v_prj_worklog$v_prj_worklog$sd': date,
             # 'ctl00$content$v_prj_worklog$v_prj_worklog$sd_time': '9%3A00',
-            'ctl00$content$v_prj_worklog$v_prj_worklog$sd_time': '9:00',
+            'ctl00$content$v_prj_worklog$v_prj_worklog$sd_time': start_time,
             'ctl00$content$v_prj_worklog$v_prj_worklog$ed': date,
             # 'ctl00$content$v_prj_worklog$v_prj_worklog$ed_time': '18%3A00',
-            'ctl00$content$v_prj_worklog$v_prj_worklog$ed_time': '18:00',
+            'ctl00$content$v_prj_worklog$v_prj_worklog$ed_time': end_time,
             'ctl00$content$v_prj_worklog$v_prj_worklog$e_WorkType': '211',
             'ctl00$content$v_prj_worklog$v_prj_worklog$e_Callno': '',
             # 'ctl00$content$v_prj_worklog$v_prj_worklog$e_CUSTOMER_ID': '%E4%B8%AD%E5%9B%BD%E9%82%AE%E6%94%BF%E5%82%A8%E8%93%84%E9%93%B6%E8%A1%8C%E8%82%A1%E4%BB%BD%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8',
@@ -228,8 +236,8 @@ class Fuckzb():
             'ctl00$content$v_prj_worklog$v_prj_worklog$e_PROJECT_ID': '中国邮政储蓄银行股份有限公司-中国邮政储蓄银行邮政金融计算机系统硬件设备维护服务采购合同-16-2207',
             'ctl00$content$v_prj_worklog$v_prj_worklog$e_PROJECT_ID_hid': '99586bd0-4ffa-4863-94a5-fb16aef24a6a',
             'ctl00$content$v_prj_worklog$v_prj_worklog$e_sqkh': '',
-            'ctl00$content$v_prj_worklog$v_prj_worklog$e_sfjb': '2',
-            'ctl00$content$v_prj_worklog$v_prj_worklog$e_ADDHOUR': '',
+            'ctl00$content$v_prj_worklog$v_prj_worklog$e_sfjb': '2',    #1为加班
+            'ctl00$content$v_prj_worklog$v_prj_worklog$e_ADDHOUR': '',  #加班小时
             # 'ctl00$content$v_prj_worklog$v_prj_worklog$e_MEMO': '%E9%A9%BB%E5%9C%BA',
             'ctl00$content$v_prj_worklog$v_prj_worklog$e_MEMO': content.encode('gb2312'),
             'ctl00$content$v_prj_worklog$v_prj_worklog$e5_hid': '',
