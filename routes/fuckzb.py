@@ -31,8 +31,8 @@ def login():
 
 @main.route("/getlist")
 def getlist():
-    l = f1.get_addlist()
-    return render_template('add_zb.html', l=l)
+    l,uname = f1.get_addlist()
+    return render_template('add_zb.html', l=l, uname = uname)
 
 @main.route("/delete/<del_id>", methods=["POST", "GET"])
 def delete(del_id):

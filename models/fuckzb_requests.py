@@ -175,7 +175,8 @@ class Fuckzb():
                     content.append(i.contents[j].string)
             if len(content) > 5:
                 all_contents.append(content)
-        return all_contents
+        uname = e.find('td', style='padding-left:6px;padding-top:2px').font.string
+        return all_contents, uname
 
     def delete_zb(self, del_id):
         print('call delete_zb**************')

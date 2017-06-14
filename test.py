@@ -3,8 +3,9 @@ import random
 import datetime
 import math
 import time
-# e = BeautifulSoup(open('1.html'))
-# l =e.find_all("tr", class_='eosAjaxGridItem')
+e = BeautifulSoup(open('1.html'), "lxml")
+# l =e.find("div", class_='x-panel-body x-panel-body-noheader x-panel-body-noborder')
+l =e.find('td',style='padding-left:6px;padding-top:2px').font.string
 #
 # for i in l:
 #     # print(i.find_all('td').value())
@@ -29,6 +30,9 @@ import time
 #     print()
 
 # print(datetime.datetime.now().weekday())
-print(datetime.datetime.now())
-print(time.strftime('%Y-%m-%d',time.localtime(time.time())))
+# print(datetime.datetime.now())
+# print(time.strftime('%Y-%m-%d',time.localtime(time.time())))
+
+a = l
+print(a)
 
