@@ -24,7 +24,6 @@ def login():
     pwd = request.form.get('pwd', '')
     yzm = request.form.get('yzm', '')
     checked = f1.log(name, pwd, yzm)
-    print('checked is ----------', checked)
     if checked == None or checked[0] == 1:
         return redirect(url_for('.getlist'))
     else:
@@ -38,7 +37,6 @@ def getlist():
 
 @main.route("/delete/<del_id>", methods=["POST", "GET"])
 def delete(del_id):
-    print('------------------',del_id)
     f1.delete_zb(del_id)
     return redirect(url_for('.getlist'))
 
