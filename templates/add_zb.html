@@ -7,9 +7,6 @@
 </head>
 <body>
     <div>
-        <label>用户：</label><label>{{ uname }}</label>
-    </div>
-    <div>
         <form method=post action={{ url_for(".add") }}>
             日期：<input type="text" name="date">
             内容：<input type="text" name="content" value="驻场">

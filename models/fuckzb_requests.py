@@ -43,7 +43,7 @@ class Fuckzb():
     #     # yzm = input(': ')
     #     # return yzm
 
-    def yzm(self):
+    def yzm(self, ip):
         code = random.randint(1000000000,9999999999)
         url = 'http://erp.atitech.com.cn/CommonPages/EOS.ValidateCode.aspx?code={}'.format(code,)
         header = {
@@ -56,7 +56,7 @@ class Fuckzb():
             'Accept-Encoding': 'gzip, deflate',
         }
         r = self.s.get(url=url, headers = self.headers, cookies = self.d_cookies)
-        with open('static/img/yzm.jpg', 'wb') as f:
+        with open('static/img/{}.jpg'.format(ip,), 'wb') as f:
             f.write(r.content)
         # yzm = input(': ')
         # return yzm
@@ -124,7 +124,7 @@ class Fuckzb():
         }
         data['ctl00$content$platform_login$validatebox_validateInputControl'] = self.yzm_local()
         r = self.s.post(url=url, headers=self.headers, data=data, cookies = self.d_cookies)
-        print(json.loads(r.text)['value'])
+
 
 
     def get_zblist(self):
@@ -175,11 +175,10 @@ class Fuckzb():
                     content.append(i.contents[j].string)
             if len(content) > 5:
                 all_contents.append(content)
-        uname = e.find('td', style='padding-left:6px;padding-top:2px').font.string
-        return all_contents, uname
+        # uname = e.find('td', style='padding-left:6px;padding-top:2px').font.string
+        return all_contents
 
     def delete_zb(self, del_id):
-        print('call delete_zb**************')
         url = 'http://erp.atitech.com.cn/iss/hr_techlog/prj_mainworklog_List.aspx?OBJID=5be9513b-4816-4864-952e-87779f9dcef4&Anthem_CallBack=true'
         data = {
             'Anthem_PageMethod': 'Execute',
@@ -214,21 +213,18 @@ class Fuckzb():
             '__EVENTTARGET': '',
         }
         r = self.s.post(url = url , data = data , headers = self.headers, cookies = self.d_cookies)
-        print('%%%%%%%%%%%%%%%%%add_zb return message: ',r.text)
         return json.loads(r.text)['value'][2:-1]
 
 
 
     def add_zb_detail(self, date, start_time, end_time, content):
-        print('date  00000000', date)
+
         mainlog = self.add_zb(date)
         overwork = 2
         overwork_hour = ''
         if int(end_time[0:2]) > 18:
             overwork = 1
             overwork_hour = math.ceil(int(end_time[0:2]) - 18)
-        print('overwork ------', overwork)
-        print('hour +++++++++',overwork_hour)
         url = 'http://erp.atitech.com.cn/iss/hr_techlog/prj_SubWorklog_AddOrEdit.aspx?PK=&MAINLOG=' +  mainlog + '&DATE=' + date +'+00%3a00%3a00&DT=0.7084406246866846&Anthem_CallBack=true'
         data = {
             'Anthem_PageMethod': 'Client_Callback',
@@ -263,7 +259,7 @@ class Fuckzb():
             '__EVENTTARGET': '',
         }
         r = self.s.post(url = url, data = data , headers = self.headers, cookies = self.d_cookies)
-        print(r.text)
+
 
 if __name__ == '__main__':
     f1 = Fuckzb()

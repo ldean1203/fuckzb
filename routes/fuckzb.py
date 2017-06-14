@@ -15,8 +15,9 @@ f1 = Fuckzb()
 
 @main.route("/")
 def index():
-    f1.yzm()
-    return render_template('fuckzb_index.html')
+    ip = request.remote_addr
+    f1.yzm(ip)
+    return render_template('fuckzb_index.html', user_ip = ip)
 
 @main.route("/login", methods=["POST"])
 def login():
