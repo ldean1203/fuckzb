@@ -2,6 +2,7 @@ import requests
 import json
 from bs4 import BeautifulSoup
 import random
+import math
 
 class Fuckzb():
     headers = {
@@ -161,22 +162,29 @@ class Fuckzb():
         l = e.find_all("tr", class_='eosAjaxGridItem')
         # all_contents = [[j.string for j in i.contents] for i in l]
         # return all_contents
+
         all_contents = []
         for i in l:
+            content = []
             for j in range(len(i.contents)):
+                if j == 1 and i.contents[j].input == None:
+                    break
                 if j == 1 and i.contents[j].input != None:
-                    all_contents.append(i.contents[j].input['value'])
+                    content.append(i.contents[j].input['value'])
                 else:
-                    all_contents.append(i.contents[j].string)
+                    content.append(i.contents[j].string)
+            if len(content) > 5:
+                all_contents.append(content)
         return all_contents
 
-    def delete_zb(self):
+    def delete_zb(self, del_id):
+        print('call delete_zb**************')
         url = 'http://erp.atitech.com.cn/iss/hr_techlog/prj_mainworklog_List.aspx?OBJID=5be9513b-4816-4864-952e-87779f9dcef4&Anthem_CallBack=true'
         data = {
             'Anthem_PageMethod': 'Execute',
             'Anthem_UpdatePage': 'true',
             # '__CLIENTPOSTDATA': 'e_deletesql%7CExec%7CS%3Aea538a2f-ffa8-4e0a-a588-c600b87b895f',
-            '__CLIENTPOSTDATA': 'e_deletesql|Exec|S:ea538a2f-ffa8-4e0a-a588-c600b87b895f',
+            '__CLIENTPOSTDATA': 'e_deletesql|Exec|S:{}'.format(del_id,),
             # '__VIEWSTATE': '%2FwEPDwULLTEyNzQ3NTczMzEPZBYCZg9kFgICAw9kFgQCAQ8PFgIeBUxvZ2VkZ2QWAmYPDxYCHgRUZXh0BagB5oqA5pyv5pel5b%2BXIC0%2BIDxhIGhyZWY9Ii4uLy4uL2lzcy9ocl90ZWNobG9nL3Byal9tYWlud29ya2xvZ19MaXN0LmFzcHg%2FT0JKSUQ9NWJlOTUxM2ItNDgxNi00ODY0LTk1MmUtODc3NzlmOWRjZWY0IiB0aXRsZT0i5pel5b%2BX5aGr5YaZIiB0YXJnZXQ9Il9zZWxmIj7ml6Xlv5floavlhpk8L2E%2BZGQCAw9kFgJmD2QWAmYPZBYIAgEPDxYCHwFlZGQCAg8QZGQWAWZkAgMPDxYCHwFlZGQCBA8PFgIfAWVkZGRmIjRrU2h7Od6jXlY%2FolvVG6bKSQ%3D%3D',
             '__VIEWSTATE': '/wEPDwULLTEyNzQ3NTczMzEPZBYCZg9kFgICAw9kFgQCAQ8PFgIeBUxvZ2VkZ2QWAmYPDxYCHgRUZXh0BagB5oqA5pyv5pel5b+XIC0+IDxhIGhyZWY9Ii4uLy4uL2lzcy9ocl90ZWNobG9nL3Byal9tYWlud29ya2xvZ19MaXN0LmFzcHg/T0JKSUQ9NWJlOTUxM2ItNDgxNi00ODY0LTk1MmUtODc3NzlmOWRjZWY0IiB0aXRsZT0i5pel5b+X5aGr5YaZIiB0YXJnZXQ9Il9zZWxmIj7ml6Xlv5floavlhpk8L2E+ZGQCAw9kFgJmD2QWAmYPZBYIAgEPDxYCHwFlZGQCAg8QZGQWAWZkAgMPDxYCHwFlZGQCBA8PFgIfAWVkZGRmIjRrU2h7Od6jXlY/olvVG6bKSQ==',
             '__VIEWSTATEGENERATOR': '43C509D3',
@@ -188,6 +196,7 @@ class Fuckzb():
             'ctl00$content$s_prj_worklog$s_prj_worklog$e_prj': '',
             '__EVENTTARGET': '',
         }
+        requests.post(url = url , data = data , headers = self.headers, cookies = self.d_cookies)
 
 
     def add_zb(self, date):
@@ -204,12 +213,21 @@ class Fuckzb():
             '__EVENTTARGET': '',
         }
         r = self.s.post(url = url , data = data , headers = self.headers, cookies = self.d_cookies)
+        print('%%%%%%%%%%%%%%%%%add_zb return message: ',r.text)
         return json.loads(r.text)['value'][2:-1]
 
 
 
     def add_zb_detail(self, date, start_time, end_time, content):
+        print('date  00000000', date)
         mainlog = self.add_zb(date)
+        overwork = 2
+        overwork_hour = ''
+        if int(end_time[0:2]) > 18:
+            overwork = 1
+            overwork_hour = math.ceil(int(end_time[0:2]) - 18)
+        print('overwork ------', overwork)
+        print('hour +++++++++',overwork_hour)
         url = 'http://erp.atitech.com.cn/iss/hr_techlog/prj_SubWorklog_AddOrEdit.aspx?PK=&MAINLOG=' +  mainlog + '&DATE=' + date +'+00%3a00%3a00&DT=0.7084406246866846&Anthem_CallBack=true'
         data = {
             'Anthem_PageMethod': 'Client_Callback',
@@ -236,8 +254,8 @@ class Fuckzb():
             'ctl00$content$v_prj_worklog$v_prj_worklog$e_PROJECT_ID': '中国邮政储蓄银行股份有限公司-中国邮政储蓄银行邮政金融计算机系统硬件设备维护服务采购合同-16-2207',
             'ctl00$content$v_prj_worklog$v_prj_worklog$e_PROJECT_ID_hid': '99586bd0-4ffa-4863-94a5-fb16aef24a6a',
             'ctl00$content$v_prj_worklog$v_prj_worklog$e_sqkh': '',
-            'ctl00$content$v_prj_worklog$v_prj_worklog$e_sfjb': '2',    #1为加班
-            'ctl00$content$v_prj_worklog$v_prj_worklog$e_ADDHOUR': '',  #加班小时
+            'ctl00$content$v_prj_worklog$v_prj_worklog$e_sfjb': overwork,    #1为加班
+            'ctl00$content$v_prj_worklog$v_prj_worklog$e_ADDHOUR': overwork_hour,  #加班小时
             # 'ctl00$content$v_prj_worklog$v_prj_worklog$e_MEMO': '%E9%A9%BB%E5%9C%BA',
             'ctl00$content$v_prj_worklog$v_prj_worklog$e_MEMO': content.encode('gb2312'),
             'ctl00$content$v_prj_worklog$v_prj_worklog$e5_hid': '',

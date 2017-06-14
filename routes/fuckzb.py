@@ -6,6 +6,7 @@ from flask import (
     url_for,
     Blueprint,
 )
+import time
 from models.fuckzb_requests import Fuckzb
 
 main = Blueprint('fuckzb',__name__)
@@ -35,8 +36,10 @@ def getlist():
     l = f1.get_addlist()
     return render_template('add_zb.html', l=l)
 
-@main.route("/delete/<int:del_id>", methods=["POST"])
-def delete():
+@main.route("/delete/<del_id>", methods=["POST", "GET"])
+def delete(del_id):
+    print('------------------',del_id)
+    f1.delete_zb(del_id)
     return redirect(url_for('.getlist'))
 
 @main.route("/add", methods=["POST"])
@@ -45,5 +48,14 @@ def add():
     content = request.form.get('content','')
     start_time = request.form.get('start_time','')
     end_time = request.form.get('end_time','')
+    f1.add_zb_detail(date, start_time, end_time, content)
+    return redirect(url_for('.getlist'))
+
+@main.route("/dayadd", methods=["POST"])
+def dayadd():
+    date = time.strftime('%Y-%m-%d',time.localtime(time.time()))
+    content = request.form.get('content1','')
+    start_time = '9:00'
+    end_time = '18:00'
     f1.add_zb_detail(date, start_time, end_time, content)
     return redirect(url_for('.getlist'))

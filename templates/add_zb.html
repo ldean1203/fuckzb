@@ -16,15 +16,21 @@
         </form>
     </div>
     <div>
-        <table class="table">
+        <form method="post" action={{ url_for(".dayadd") }}>
+            content:<input type="text" name="content1">
+            <button type="submit">王哥专用，填写当天</button>
+        </form>
+    </div>
+    <div>
+        <table class="table table-striped table-hover">
             <tbody>
-           <tr>
+            <tr>
                <td width="30">序号</td><td width="UNSORT">操作</td><td width="*">状态</td><td width="*">填写人</td><td width="*">日期</td><td width="*">工时</td><td width="*">加班工时</td><td width="*">内容</td><td width="*">审批时间</td><td width="*">审批意见</td><td width="*">审批人</td>
-  </tr>
+            </tr>
             {% for i in l %}
                 <tr>
                     <td>{{ i[2] }}</td>
-                    <td><a href={{ url_for('delete',del_id = i[3] ) }}>删除</a></td>
+                    <td><a href={{ url_for('.delete',del_id = i[1] ) }}>删除</a></td>
                     <td>{{ i[4] }}</td>
                     <td>{{ i[5] }}</td>
                     <td>{{ i[6] }}</td>
