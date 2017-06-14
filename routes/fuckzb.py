@@ -1,4 +1,3 @@
-import openfile as openfile
 from flask import (
     render_template,
     request,
