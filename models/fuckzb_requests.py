@@ -75,7 +75,6 @@ class Fuckzb():
         }
         # data['ctl00$content$platform_login$validatebox_validateInputControl'] = yzm
         r = requests.post(url=url, headers=self.headers, data=data, cookies = self.d_cookies)
-        print("log info: ",json.loads(r.text)['value'])
         return json.loads(r.text)['value']
 
     def log_local(self,name,pwd):
@@ -191,8 +190,6 @@ class Fuckzb():
             '__EVENTTARGET': '',
         }
         r = self.s.post(url = url , data = data , headers = self.headers, cookies = self.d_cookies)
-        print("from add_zb: ",json.loads(r.text))
-
         return json.loads(r.text)['value'][2:-1]
 
 
@@ -240,7 +237,7 @@ class Fuckzb():
             '__EVENTTARGET': '',
         }
         r = self.s.post(url = url, data = data , headers = self.headers, cookies = self.d_cookies)
-        print('from zb add detail :',json.loads(r.text))
+
 
 
 
