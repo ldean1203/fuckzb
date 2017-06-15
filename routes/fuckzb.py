@@ -24,7 +24,7 @@ def index():
     print(request.cookies)
     ip = json.dumps(request.cookies)
     code = f1.yzm()
-    print(session)
+    # print(session)
     return render_template('fuckzb_index.html', code = code, user_ip = ip )
 
 @main.route("/login", methods=["POST"])
@@ -34,7 +34,7 @@ def login():
     yzm = request.form.get('yzm', '')
     checked = f1.log(name, pwd, yzm)
     session['userid'] = name
-    print("from login:",session)
+    # print("from login:",session)
     if checked == None or checked[0] == 1:
         return redirect(url_for('.getaddlist'))
     else:
@@ -44,13 +44,13 @@ def login():
 @main.route("/getaddlist")
 def getaddlist():
     l = f1.get_addlist()
-    print("from getaddlist:",session)
+    # print("from getaddlist:",session)
     return render_template('add_zb.html', l=l)
 
 @main.route("/delete/<del_id>", methods=["POST", "GET"])
 def delete(del_id):
     f1.delete_zb(del_id)
-    print("from delete:",session)
+    # print("from delete:",session)
     return redirect(url_for('.getaddlist'))
 
 @main.route("/add", methods=["POST"])
@@ -60,7 +60,7 @@ def add():
     start_time = request.form.get('start_time','')
     end_time = request.form.get('end_time','')
     f1.add_zb_detail(date, start_time, end_time, content)
-    print("from add:",session)
+    # print("from add:",session)
     return redirect(url_for('.getaddlist'))
 
 @main.route("/dayadd", methods=["POST"])
@@ -70,11 +70,11 @@ def dayadd():
     start_time = '9:00'
     end_time = '18:00'
     f1.add_zb_detail(date, start_time, end_time, content)
-    print("from dayadd:",session)
+    # print("from dayadd:",session)
     return redirect(url_for('.getaddlist'))
 
 @main.route("/getlist", methods=["GET","POST"])
 def getlist():
     l = f1.get_zblist()
-    print("from getlist:",session)
+    # print("from getlist:",session)
     return render_template('add_zb.html',l = l)
