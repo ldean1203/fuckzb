@@ -17,5 +17,6 @@ app.secret_key = 'random string'
 
 if __name__ == '__main__':
     app.debug = True
+    app.use_reloader = False
     app.run(host='0.0.0.0')
 
