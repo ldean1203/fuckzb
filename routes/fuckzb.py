@@ -9,7 +9,7 @@ from flask import (
     session
 )
 import json
-import time
+import time,datetime
 import os
 from models.fuckzb_requests import Fuckzb
 
@@ -44,12 +44,8 @@ def login():
 @main.route("/getaddlist")
 def getaddlist():
     l = f1.get_addlist()
-    if len(l) == 0:
-        l = f1.get_zblist()
-    print(l)
-    date = time.strftime('%Y-%m-%d', time.localtime(time.time()))
     print("from getaddlist:",session)
-    return render_template('add_zb.html', l=l, date = date)
+    return render_template('add_zb.html', l=l)
 
 @main.route("/delete/<del_id>", methods=["POST", "GET"])
 def delete(del_id):
