@@ -12,6 +12,7 @@ from routes.fuckzb import main as fuckzb_routes
 
 app = Flask(__name__)
 app.register_blueprint(fuckzb_routes, url_prefix='/fuckzb')
+app.secret_key = 'random string'
 
 
 if __name__ == '__main__':

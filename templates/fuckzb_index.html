@@ -21,6 +21,11 @@
                 <p><img src="/static/img/{{ code }}.jpg"></p>
                 <button type="submit" class="btn btn-primary">登陆</button>
             </form>
+             <p>
+                {% for message in get_flashed_messages() %}
+                    {{ message }}
+                {% endfor %}
+            </p>
         </div>
         <div>
         {{ user_ip }}

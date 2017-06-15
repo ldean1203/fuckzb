@@ -34,6 +34,7 @@ def login():
     if checked == None or checked[0] == 1:
         return redirect(url_for('.getlist'))
     else:
+        flash(checked)
         return redirect(url_for('.index'))
 
 @main.route("/getlist")
