@@ -18,11 +18,14 @@
                 <p>userid:<input type="text" name="userid"></p>
                 <p>password:<input type="password" name="pwd"></p>
                 <p>验证码：<input type="'text" name="yzm"></p>
-                <p><img src="/static/img/{{ user_ip }}.jpg"></p>
+                <p><img src="/static/img/{{ code }}.jpg"></p>
                 <button type="submit" class="btn btn-primary">登陆</button>
-            your ip is :{{ user_ip }}
             </form>
         </div>
+        <div>
+        {{ user_ip }}
     </div>
+    </div>
+
 </body>
 </html>

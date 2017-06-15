@@ -24,7 +24,7 @@ class Fuckzb():
         # self.cookie = self.cookie[:-1]
 
 
-    def yzm(self, ip):
+    def yzm(self):
         code = random.randint(1000000000,9999999999)
         url = 'http://erp.atitech.com.cn/CommonPages/EOS.ValidateCode.aspx?code={}'.format(code,)
         header = {
@@ -37,10 +37,10 @@ class Fuckzb():
             'Accept-Encoding': 'gzip, deflate',
         }
         r = self.s.get(url=url, headers = self.headers, cookies = self.d_cookies)
-        with open('static/img/{}.jpg'.format(ip,), 'wb') as f:
+        with open('static/img/{}.jpg'.format(code,), 'wb') as f:
             f.write(r.content)
         # yzm = input(': ')
-        # return yzm
+        return code
 
     def yzm_local(self):
         url = 'http://erp.atitech.com.cn/CommonPages/EOS.ValidateCode.aspx?code=1234567890'

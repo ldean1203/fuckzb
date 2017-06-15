@@ -9,6 +9,7 @@ from flask import (
 )
 import json
 import time
+import os
 from models.fuckzb_requests import Fuckzb
 
 main = Blueprint('fuckzb',__name__)
@@ -18,10 +19,11 @@ f1 = Fuckzb()
 @main.route("/")
 def index():
     # ip = request.remote_addr
-    ip = json.dumps(request.cookies)[1:30]
-    print(json.dumps(request.cookies)[1:30])
-    f1.yzm(ip)
-    return render_template('fuckzb_index.html', user_ip = ip)
+    ip = json.dumps(request.cookies)
+    print(json.dumps(request.cookies))
+    code = f1.yzm()
+    # os.remove('static/img/{}.jpg'.format(code,))
+    return render_template('fuckzb_index.html', code = code, user_ip = ip)
 
 @main.route("/login", methods=["POST"])
 def login():
