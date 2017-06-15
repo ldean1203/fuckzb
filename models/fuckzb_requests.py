@@ -74,7 +74,7 @@ class Fuckzb(Model):
     def get_zblist(self):
         url = 'http://erp.atitech.com.cn/iss/hr_techlog/prj_mainworklogquery_List.aspx?OBJID=389012f1-384f-447c-98ee-b2d32d0e44e9'
         r = requests.get(url=url, cookies = self.d_cookies, headers = self.headers)
-        e = BeautifulSoup(r.text, "lxml")
+        e = BeautifulSoup(r.text)
         l = e.find_all("tr", class_='eosAjaxGridItem')
         all_contents = []
         for i in l:
@@ -93,7 +93,7 @@ class Fuckzb(Model):
     def get_addlist(self):
         url = 'http://erp.atitech.com.cn/iss/hr_techlog/prj_mainworklog_List.aspx?OBJID=5be9513b-4816-4864-952e-87779f9dcef4'
         r = requests.get(url=url, cookies = self.d_cookies, headers = self.headers)
-        e = BeautifulSoup(r.text, "lxml")
+        e = BeautifulSoup(r.text)
         l = e.find_all("tr", class_='eosAjaxGridItem')
         # all_contents = [[j.string for j in i.contents] for i in l]
         # return all_contents
