@@ -5,7 +5,8 @@ from flask import (
     redirect,
     url_for,
     Blueprint,
-    Response
+    Response,
+    session
 )
 import json
 import time
@@ -16,14 +17,15 @@ main = Blueprint('fuckzb',__name__)
 
 f1 = Fuckzb()
 
-@main.route("/")
+
+@main.route("/", methods=["GET","POST"])
 def index():
     # ip = request.remote_addr
+    print(request.cookies)
     ip = json.dumps(request.cookies)
-    print(json.dumps(request.cookies))
     code = f1.yzm()
-    # os.remove('static/img/{}.jpg'.format(code,))
-    return render_template('fuckzb_index.html', code = code, user_ip = ip)
+    print(session)
+    return render_template('fuckzb_index.html', code = code, user_ip = ip )
 
 @main.route("/login", methods=["POST"])
 def login():
@@ -31,22 +33,29 @@ def login():
     pwd = request.form.get('pwd', '')
     yzm = request.form.get('yzm', '')
     checked = f1.log(name, pwd, yzm)
+    session['userid'] = name
+    print("from login:",session)
     if checked == None or checked[0] == 1:
-        return redirect(url_for('.getlist'))
+        return redirect(url_for('.getaddlist'))
     else:
         flash(checked)
         return redirect(url_for('.index'))
 
-@main.route("/getlist")
-def getlist():
+@main.route("/getaddlist")
+def getaddlist():
     l = f1.get_addlist()
+    if len(l) == 0:
+        l = f1.get_zblist()
     print(l)
-    return render_template('add_zb.html', l=l)
+    date = time.strftime('%Y-%m-%d', time.localtime(time.time()))
+    print("from getaddlist:",session)
+    return render_template('add_zb.html', l=l, date = date)
 
 @main.route("/delete/<del_id>", methods=["POST", "GET"])
 def delete(del_id):
     f1.delete_zb(del_id)
-    return redirect(url_for('.getlist'))
+    print("from delete:",session)
+    return redirect(url_for('.getaddlist'))
 
 @main.route("/add", methods=["POST"])
 def add():
@@ -55,7 +64,8 @@ def add():
     start_time = request.form.get('start_time','')
     end_time = request.form.get('end_time','')
     f1.add_zb_detail(date, start_time, end_time, content)
-    return redirect(url_for('.getlist'))
+    print("from add:",session)
+    return redirect(url_for('.getaddlist'))
 
 @main.route("/dayadd", methods=["POST"])
 def dayadd():
@@ -64,4 +74,11 @@ def dayadd():
     start_time = '9:00'
     end_time = '18:00'
     f1.add_zb_detail(date, start_time, end_time, content)
-    return redirect(url_for('.getlist'))
+    print("from dayadd:",session)
+    return redirect(url_for('.getaddlist'))
+
+@main.route("/getlist", methods=["GET","POST"])
+def getlist():
+    l = f1.get_zblist()
+    print("from getlist:",session)
+    return render_template('add_zb.html',l = l)

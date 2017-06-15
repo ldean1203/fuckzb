@@ -1,9 +1,8 @@
-import pytesseract
-
-from PIL import Image
-
-image = Image.open('static/img/yzm.jpg')
-
-vcode = pytesseract.image_to_string(image)
-
-print (vcode)
+from pytesser3 import *
+im = Image.open('yzm.jpg')
+text = image_to_string(im)
+print( "Using image_to_string(): ")
+print(text)
+text = image_file_to_string('fonts_test.png', graceful_errors=True)
+print("Using image_file_to_string():")
+print(text)
