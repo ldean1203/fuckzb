@@ -14,12 +14,12 @@ class Fuckzb(Model):
             'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_5) AppleWebKit/603.2.4 (KHTML, like Gecko) '
                           'Version/10.1.1 Safari/603.2.4',
         }
-        # r = self.s.get('http://erp.atitech.com.cn/platform/passport/login.aspx', headers = self.headers)
+        # r = self.s.get('http://58.30.224.47/platform/passport/login.aspx', headers = self.headers)
         # self.d_cookies = requests.utils.dict_from_cookiejar(r.cookies)
 
     def yzm(self):
         code = random.randint(1000000000, 9999999999)
-        url = 'http://erp.atitech.com.cn/CommonPages/EOS.ValidateCode.aspx?code={}'.format(code, )
+        url = 'http://58.30.224.47/CommonPages/EOS.ValidateCode.aspx?code={}'.format(code, )
         r = self.s.get(url=url, headers=self.headers)
         d_cookies = requests.utils.dict_from_cookiejar(r.cookies)
         session['cookie'] = d_cookies
@@ -30,7 +30,7 @@ class Fuckzb(Model):
         return session['cookie']['ASP.NET_SessionId']
 
     def log(self, name, pwd, yzm):
-        url = 'http://erp.atitech.com.cn/platform/passport/login.aspx?Anthem_CallBack=true'
+        url = 'http://58.30.224.47/platform/passport/login.aspx?Anthem_CallBack=true'
         data = {
             'Anthem_PageMethod': 'Client_Callback',
             'Anthem_UpdatePage': 'true',
@@ -48,7 +48,7 @@ class Fuckzb(Model):
         return json.loads(r.text)['value']
 
     def get_zblist(self):
-        url = 'http://erp.atitech.com.cn/iss/hr_techlog/prj_mainworklogquery_List.aspx?OBJID=389012f1-384f-447c-98ee-b2d32d0e44e9'
+        url = 'http://58.30.224.47/iss/hr_techlog/prj_mainworklogquery_List.aspx?OBJID=389012f1-384f-447c-98ee-b2d32d0e44e9'
         r = self.s.get(url=url, cookies=session['cookie'], headers=self.headers)
         e = BeautifulSoup(r.text)
         l = e.find_all("tr", class_='eosAjaxGridItem')
@@ -67,7 +67,7 @@ class Fuckzb(Model):
         return all_contents
 
     def get_addlist(self):
-        url = 'http://erp.atitech.com.cn/iss/hr_techlog/prj_mainworklog_List.aspx?OBJID=5be9513b-4816-4864-952e-87779f9dcef4'
+        url = 'http://58.30.224.47/iss/hr_techlog/prj_mainworklog_List.aspx?OBJID=5be9513b-4816-4864-952e-87779f9dcef4'
         print('get_addlist cookies is ++++++++++++++++',
               session['cookie'])
         r = self.s.get(url=url, cookies=session['cookie'], headers=self.headers)
@@ -88,7 +88,7 @@ class Fuckzb(Model):
         return all_contents
 
     def delete_zb(self, del_id):
-        url = 'http://erp.atitech.com.cn/iss/hr_techlog/prj_mainworklog_List.aspx?OBJID=5be9513b-4816-4864-952e-87779f9dcef4&Anthem_CallBack=true'
+        url = 'http://58.30.224.47/iss/hr_techlog/prj_mainworklog_List.aspx?OBJID=5be9513b-4816-4864-952e-87779f9dcef4&Anthem_CallBack=true'
         data = {
             'Anthem_PageMethod': 'Execute',
             'Anthem_UpdatePage': 'true',
@@ -108,7 +108,7 @@ class Fuckzb(Model):
         self.s.post(url=url, data=data, headers=self.headers, cookies=session['cookie'])
 
     def add_zb(self, date):
-        url = 'http://erp.atitech.com.cn/iss/hr_techlog/prj_mainworklog_AddOrEdit.aspx?DT=0.5859502467063469&Anthem_CallBack=true'
+        url = 'http://58.30.224.47/iss/hr_techlog/prj_mainworklog_AddOrEdit.aspx?DT=0.5859502467063469&Anthem_CallBack=true'
         data = {
             'Anthem_PageMethod': 'Client_Callback',
             'Anthem_UpdatePage': 'true',
@@ -130,7 +130,7 @@ class Fuckzb(Model):
         if int(end_time[0:2]) > 18:
             overwork = 1
             overwork_hour = math.ceil(int(end_time[0:2]) - 18)
-        url = 'http://erp.atitech.com.cn/iss/hr_techlog/prj_SubWorklog_AddOrEdit.aspx?PK=&MAINLOG=' + mainlog + '&DATE=' + date + '+00%3a00%3a00&DT=0.7084406246866846&Anthem_CallBack=true'
+        url = 'http://58.30.224.47/iss/hr_techlog/prj_SubWorklog_AddOrEdit.aspx?PK=&MAINLOG=' + mainlog + '&DATE=' + date + '+00%3a00%3a00&DT=0.7084406246866846&Anthem_CallBack=true'
         data = {
             'Anthem_PageMethod': 'Client_Callback',
             'Anthem_UpdatePage': 'true',
