@@ -18,13 +18,15 @@ class Fuckzb(Model):
 
 
     def yzm(self):
+        session['ASP.NET_SessionId'] = self.d_cookies['ASP.NET_SessionId']
         code = random.randint(1000000000,9999999999)
         url = 'http://erp.atitech.com.cn/CommonPages/EOS.ValidateCode.aspx?code={}'.format(code,)
         r = self.s.get(url=url, headers = self.headers, cookies = self.d_cookies)
-        with open('static/img/{}.jpg'.format(code,), 'wb') as f:
+        with open('static/img/{}.jpg'.format(self.d_cookies['ASP.NET_SessionId'],), 'wb') as f:
             f.write(r.content)
         # yzm = input(': ')
-        return code
+        print(self.d_cookies['ASP.NET_SessionId'])
+        return self.d_cookies['ASP.NET_SessionId']
 
     # @classmethod
     # def yzm(cls):
@@ -188,7 +190,7 @@ class Fuckzb(Model):
             '__EVENTTARGET': '',
         }
         r = self.s.post(url = url , data = data , headers = self.headers, cookies = self.d_cookies)
-        return json.loads(r.text)['value'][2:-1]
+        return json.loads(r.text)['value']
 
     # @classmethod
     # def add_zb(cls, date):
@@ -207,8 +209,7 @@ class Fuckzb(Model):
     #     r = requests.post(url = url , data = data , headers = cls.headers, cookies = cls.d_cookies)
     #     return json.loads(r.text)['value'][2:-1]
 
-    def add_zb_detail(self, date, start_time, end_time, content):
-        mainlog = self.add_zb(date)
+    def add_zb_detail(self, date, start_time, end_time, content, mainlog):
         overwork = 2
         overwork_hour = ''
         if int(end_time[0:2]) > 18:

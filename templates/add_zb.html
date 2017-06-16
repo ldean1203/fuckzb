@@ -7,7 +7,7 @@
     <link href="/static/css/pure-min.css" rel="stylesheet" type="text/css">
     <script src="/static/js/jquery-3.0.0.min.js"></script>
     <script src="/static/js/glDatePicker.min.js"></script>
-    <script src="/static/js/jquery-ui.min.js"></script>
+    <script src="/static/js/jquery-ui.min.css"></script>
     <title>add</title>
 </head>
 <body>
@@ -23,8 +23,16 @@
     <div>
         <form method="post" action={{ url_for(".dayadd") }}>
             content:<input type="text" name="content1" value="驻场">
-            <button type="submit">王哥专用，填写当天</button>
+            <button type="submit">填写当天</button>
         </form>
+        <form method="post" action={{ url_for(".fivedays") }}>
+            <button type="submit">本周正常上班</button>
+        </form>
+         <p>
+            {% for message in get_flashed_messages() %}
+                {{ message }}
+            {% endfor %}
+        </p>
         <form method="post" action="{{ url_for(".getlist")}}">
             <button type="submit">已提交列表</button>
         </form>

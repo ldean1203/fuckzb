@@ -24,8 +24,9 @@ def index():
     print(request.cookies)
     ip = json.dumps(request.cookies)
     code = f1.yzm()
+    session['ASP.NET_SessionId'] = code
     # print(session)
-    return render_template('fuckzb_index.html', code = code, user_ip = ip )
+    return render_template('fuckzb_index.html', code = code)
 
 @main.route("/login", methods=["POST"])
 def login():
@@ -59,8 +60,13 @@ def add():
     content = request.form.get('content','')
     start_time = request.form.get('start_time','')
     end_time = request.form.get('end_time','')
-    f1.add_zb_detail(date, start_time, end_time, content)
-    # print("from add:",session)
+    status = f1.add_zb(date)
+    if status[0] == 0:
+        flash(status[2:-1])
+    s2 = f1.add_zb_detail(date, start_time, end_time, content, status[2:-1])
+    if s2 != None:
+        flash(s2)
+        # print("from add:",session)
     return redirect(url_for('.getaddlist'))
 
 @main.route("/dayadd", methods=["POST"])
@@ -69,8 +75,13 @@ def dayadd():
     content = request.form.get('content1','')
     start_time = '9:00'
     end_time = '18:00'
-    f1.add_zb_detail(date, start_time, end_time, content)
-    # print("from dayadd:",session)
+    status = f1.add_zb(date)
+    if status[0] == 0:
+        flash(status[2:-1])
+    s2 = f1.add_zb_detail(date, start_time, end_time, content, status[2:-1])
+    if s2 != None:
+        flash(s2)
+        # print("from add:",session)
     return redirect(url_for('.getaddlist'))
 
 @main.route("/getlist", methods=["GET","POST"])
@@ -78,3 +89,22 @@ def getlist():
     l = f1.get_zblist()
     # print("from getlist:",session)
     return render_template('add_zb.html',l = l)
+
+@main.route("/fivedays", methods=["POST"])
+def fivedays():
+    today = datetime.date.today()
+    content = '驻场'
+    start_time = '9:00'
+    end_time = '18:00'
+    for i in range(3,8):
+        sunday = today + datetime.timedelta(6 - today.weekday() + 1) - datetime.timedelta(i)
+        date = sunday.strftime("%Y-%m-%d")
+
+        status = f1.add_zb(date)
+        if status[0] == 0:
+            flash(status[2:-1])
+        s2 = f1.add_zb_detail(date, start_time, end_time, content, status[2:-1])
+        if s2 != None:
+            flash(s2)
+            # print("from add:",session)
+    return redirect(url_for('.getaddlist'))
