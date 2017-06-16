@@ -6,7 +6,8 @@ from flask import (
     url_for,
     Blueprint,
     Response,
-    session
+    session,
+    Flask
 )
 import json
 import time,datetime
@@ -21,11 +22,9 @@ f1 = Fuckzb()
 @main.route("/", methods=["GET","POST"])
 def index():
     # ip = request.remote_addr
-    print(request.cookies)
-    ip = json.dumps(request.cookies)
+    # ip = json.dumps(request.cookies)
     code = f1.yzm()
-    session['ASP.NET_SessionId'] = code
-    # print(session)
+    print('session is ----',session)
     return render_template('fuckzb_index.html', code = code)
 
 @main.route("/login", methods=["POST"])
@@ -35,7 +34,7 @@ def login():
     yzm = request.form.get('yzm', '')
     checked = f1.log(name, pwd, yzm)
     session['userid'] = name
-    # print("from login:",session)
+    print("from login:",session)
     if checked == None or checked[0] == 1:
         return redirect(url_for('.getaddlist'))
     else:
@@ -45,13 +44,13 @@ def login():
 @main.route("/getaddlist")
 def getaddlist():
     l = f1.get_addlist()
-    # print("from getaddlist:",session)
+    print("from getaddlist:",session)
     return render_template('add_zb.html', l=l)
 
 @main.route("/delete/<del_id>", methods=["POST", "GET"])
 def delete(del_id):
     f1.delete_zb(del_id)
-    # print("from delete:",session)
+    print("from delete:",session)
     return redirect(url_for('.getaddlist'))
 
 @main.route("/add", methods=["POST"])
@@ -66,7 +65,7 @@ def add():
     s2 = f1.add_zb_detail(date, start_time, end_time, content, status[2:-1])
     if s2 != None:
         flash(s2)
-        # print("from add:",session)
+    print("from add:",session)
     return redirect(url_for('.getaddlist'))
 
 @main.route("/dayadd", methods=["POST"])
@@ -81,13 +80,13 @@ def dayadd():
     s2 = f1.add_zb_detail(date, start_time, end_time, content, status[2:-1])
     if s2 != None:
         flash(s2)
-        # print("from add:",session)
+    print("from add:",session)
     return redirect(url_for('.getaddlist'))
 
 @main.route("/getlist", methods=["GET","POST"])
 def getlist():
     l = f1.get_zblist()
-    # print("from getlist:",session)
+    print("from getlist:",session)
     return render_template('add_zb.html',l = l)
 
 @main.route("/fivedays", methods=["POST"])
@@ -106,5 +105,5 @@ def fivedays():
         s2 = f1.add_zb_detail(date, start_time, end_time, content, status[2:-1])
         if s2 != None:
             flash(s2)
-            # print("from add:",session)
+    print("from fivedays:",session)
     return redirect(url_for('.getaddlist'))

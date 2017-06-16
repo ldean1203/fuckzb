@@ -5,9 +5,7 @@ from flask import flash
 from flask import redirect
 from flask import url_for
 from flask import Blueprint
-
 from routes.fuckzb import main as fuckzb_routes
-
 
 
 app = Flask(__name__)
@@ -17,6 +15,6 @@ app.secret_key = 'random string'
 
 if __name__ == '__main__':
     app.debug = True
-    app.use_reloader = False
+    # app.use_reloader = False
     app.run(host='0.0.0.0')
 
