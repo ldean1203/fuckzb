@@ -149,3 +149,16 @@ def addmultidetail():
     if s2 != None:
         flash(s2)
     return redirect(url_for('.getaddlist'))
+
+@main.route("/submitzb/<item>", methods=["POST","GET"])
+def submitzb(item):
+    f1.submitzb(item)
+    return redirect(url_for('.getaddlist'))
+
+
+
+
+
+
+
+

@@ -95,7 +95,8 @@
             {% for i in l %}
                 <tr>
                     <td>{{ i[2] }}</td>
-                    <td><a href={{ url_for('.delete',del_id = i[1] ) }}>删除</a></td>
+                    <td><a href={{ url_for('.submitzb',item = i[1] ) }}>提交</a>
+                        <a href={{ url_for('.delete',del_id = i[1] ) }}>删除</a></td>
                     <td>{{ i[4] }}</td>
                     <td>{{ i[5] }}</td>
                     <td>{{ i[6] }}</td>

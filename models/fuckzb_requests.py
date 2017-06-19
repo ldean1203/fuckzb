@@ -146,3 +146,23 @@ class Fuckzb(Model):
             '__EVENTTARGET': '',
         }
         r = self.s.post(url=url, data=data, headers=self.headers, cookies=session['cookie'])
+
+    def submitzb(self, item):
+        url = 'http://58.30.224.47/iss/hr_techlog/prj_mainworklog_List.aspx?OBJID=5be9513b-4816-4864-952e-87779f9dcef4&Anthem_CallBack=true'
+        data = {
+            'Anthem_PageMethod': 'Execute',
+            'Anthem_UpdatePage': 'true',
+            '__CLIENTPOSTDATA': 'e_sql|Scalar|S:{}'.format(item,),
+            '__VIEWSTATE': '%2FwEPDwULLTEyNzQ3NTczMzEPZBYCZg9kFgICAw9kFgQCAQ8PFgIeBUxvZ2VkZ2QWAmYPDxYCHgRUZXh0BagB5oqA5pyv5pel5b%2BXIC0%2BIDxhIGhyZWY9Ii4uLy4uL2lzcy9ocl90ZWNobG9nL3Byal9tYWlud29ya2xvZ19MaXN0LmFzcHg%2FT0JKSUQ9NWJlOTUxM2ItNDgxNi00ODY0LTk1MmUtODc3NzlmOWRjZWY0IiB0aXRsZT0i5pel5b%2BX5aGr5YaZIiB0YXJnZXQ9Il9zZWxmIj7ml6Xlv5floavlhpk8L2E%2BZGQCAw9kFgJmD2QWAmYPZBYIAgEPDxYCHwFlZGQCAg8QZGQWAWZkAgMPDxYCHwFlZGQCBA8PFgIfAWVkZGRmIjRrU2h7Od6jXlY%2FolvVG6bKSQ%3D%3D',
+            '__VIEWSTATEGENERATOR': '43C509D3',
+            'ctl00$content$s_prj_worklog$s_prj_worklog$dt_Date_Start': '',
+            'ctl00$content$s_prj_worklog$s_prj_worklog$dt_Date_End': '',
+            'ctl00$content$s_prj_worklog$s_prj_worklog$e_Name': '',
+            'ctl00$content$s_prj_worklog$s_prj_worklog$e_logstate': '',
+            'ctl00$content$s_prj_worklog$s_prj_worklog$e_id': '',
+            'ctl00$content$s_prj_worklog$s_prj_worklog$e_prj': '',
+            'g_prj_worklog_item': item,
+            '__EVENTTARGET': '',
+        }
+        print(data)
+        # r = self.s.post(url = url , data = data, headers = self.headers, cookies = session['cookie'])
