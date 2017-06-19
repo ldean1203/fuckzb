@@ -1,12 +1,8 @@
-class a():
-    def __init__(self):
-        self.i = 0
+from bs4 import BeautifulSoup
+f = open('1.html')
+e = BeautifulSoup(f, "lxml")
+# l = e.find_all("tr", class_='eosAjaxGridItem')
+l = e.form.get_text()
 
-    def add(self):
-        self.i = 10
-
-    def p(self):
-        print(self.i)
-
-a = a()
-a.p()
+print(l)
+# print(type(l))

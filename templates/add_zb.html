@@ -3,36 +3,85 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="/static/css/bootstrap.min.css">
-    <link href="/static/css/glDatePicker.default.css" rel="stylesheet" type="text/css">
-    <link href="/static/css/pure-min.css" rel="stylesheet" type="text/css">
     <script src="/static/js/jquery-3.0.0.min.js"></script>
-    <script src="/static/js/glDatePicker.min.js"></script>
-    <script src="/static/js/jquery-ui.min.css"></script>
-    <title>add</title>
+    <style type="text/css">
+    p.pos_p
+    {
+    position:relative;
+    left:265px
+    }
+    input{display:inline}
+    </style>
+    <title>添加周报</title>
 </head>
 <body>
     <div>
-        <form method=post action={{ url_for(".add") }}>
-            日期：<input type="text" name="date" id="datepicker">
-            内容：<input type="text" name="content" value="驻场">
-            开始时间：<input type="text" name="start_time" value="9:00">
-            结束时间：<input type="text" name="end_time" value="18:00">
-            <button type="submit">添加</button>
-        </form>
+        <label>日期格式2017-06-16；晚上24点前的加班可以在结束时间直接填写</label>
     </div>
     <div>
+        <form method=post action={{ url_for(".add") }}>
+            日期：<input type="text" name="date">
+            内容：<input type="text" name="content" class="add_content" value="驻场">
+            开始时间：<input type="text" name="start_time" value="9:00">
+            结束时间：<input type="text" name="end_time" value="18:00">
+            <select name="rest" class="rest">
+                <option value="211" selected="selected">驻场职守</option>
+                <option value="301">调休</option>
+                <option value="302">年假</option>
+            </select>
+            <button type="submit">添加</button>
+            <p>
+            </p>
+            <button type="button" class="addline1">加一行</button>
+        </form>
+    </div>
+    <hr/>
+    <div>
         <form method="post" action={{ url_for(".dayadd") }}>
-            content:<input type="text" name="content1" value="驻场">
+            当天工作内容:<input type="text" name="content1" class="add_content1" value="驻场">
+            当天下班时间：<input type="text" name="end_time" value="18:00">
+            <select name="rest1" class="rest1">
+                <option value="211" selected="selected">驻场职守</option>
+                <option value="301">调休</option>
+                <option value="302">年假</option>
+            </select>
             <button type="submit">填写当天</button>
         </form>
-        <form method="post" action={{ url_for(".fivedays") }}>
-            <button type="submit">本周正常上班</button>
+    </div>
+    <hr />
+    <div>
+        <p><lable>暂时没管凌晨加班，上午调休，下午上班需要填3条的情况，后续加入</lable></p>
+        <form method=post action={{ url_for(".addmultidetail") }}>
+            日期：<input type="text" name="date1" >
+            内容1：<input type="text" name="content1">
+            开始时间1：<input type="text" name="start_time1" value="0:00">
+            结束时间1：<input type="text" name="end_time1">
+            加班：<input type="checkbox" name="jb">
+            <p class="pos_p">
+            内容2：<input type="text" name="content2">
+            开始时间2：<input type="text" name="start_time2">
+            结束时间2：<input type="text" name="end_time2" value="18:00">
+
+            <button type="submit">添加</button>
+            </p>
+
         </form>
-         <p>
+    </div>
+    <hr />
+    <div>
+        <p>
             {% for message in get_flashed_messages() %}
-                {{ message }}
+                <font color="red"> {{ message }}</font>
             {% endfor %}
+             {% block page_content %}{% endblock %}
         </p>
+    </div>
+    <div style="float:left;">
+        <form method="post" action={{ url_for(".fivedays") }}>
+            <button type="submit">本周正常上班，一键添加五天</button>
+        </form>
+    </div>
+    <div style="float:left;">
         <form method="post" action="{{ url_for(".getlist")}}">
             <button type="submit">已提交列表</button>
         </form>
@@ -61,21 +110,23 @@
             </tbody>
         </table>
     </div>
+    <script>
+    $( ".rest" ).change(function() {
+      <!--$(".add_content").val($( ".rest" ).$(":selected").text());-->
+      $(".add_content").val($( ".rest" ).find("option:selected").text());
+    });
 
+    $( ".rest1" ).change(function() {
+      <!--$(".add_content1").val($( ".rest1" ).$(":selected").text());-->
+      $(".add_content1").val($( ".rest1" ).find("option:selected").text());
+    });
+
+    $(".addline1").click(function(){
+        alert($(".addline1").attr('class'))
+        $(".addline1").before(function(n){
+        return '<div class="newline' + n + '">内容：<input type="text" name="content" class="add_content" value="驻场">开始时间：<input type="text" name="start_time" value="9:00">结束时间：<input type="text" name="end_time" value="18:00"><select name="rest" class="rest"><option value="211" selected="selected">驻场职守</option><option value="301">调休</option><option value="302">年假</option></select></div>';
+    });
+       })
+    </script>
 </body>
-<script type="text/javascript">
-
-           $(function() {
-
-              //插件的调用
-
-              $("#datepicker").datepicker({
-
-                  //在这里进行插件的属性设置
-
-              });
-
-           });
-
-       </script>
 </html>

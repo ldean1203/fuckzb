@@ -23,11 +23,9 @@ class Fuckzb(Model):
         r = self.s.get(url=url, headers=self.headers)
         d_cookies = requests.utils.dict_from_cookiejar(r.cookies)
         session['cookie'] = d_cookies
-        with open('static/img/{}.jpg'.format(session['cookie']['ASP.NET_SessionId'], ), 'wb') as f:
+        with open('static/img/{}.jpg'.format(code, ), 'wb') as f:
             f.write(r.content)
-        # yzm = input(': ')
-        session['ASP.NET_SessionId'] = session['cookie']['ASP.NET_SessionId']
-        return session['cookie']['ASP.NET_SessionId']
+        return code
 
     def log(self, name, pwd, yzm):
         url = 'http://58.30.224.47/platform/passport/login.aspx?Anthem_CallBack=true'
@@ -43,7 +41,6 @@ class Fuckzb(Model):
             '__VIEWSTATEGENERATOR': 'F05B9FE7',
             'ctl00$content$platform_login$validatebox_validateInputControl': yzm,
         }
-        print('login cookies is ++++++++++++++++', session['cookie'])
         r = self.s.post(url=url, headers=self.headers, data=data, cookies=session['cookie'])
         return json.loads(r.text)['value']
 
@@ -68,8 +65,6 @@ class Fuckzb(Model):
 
     def get_addlist(self):
         url = 'http://58.30.224.47/iss/hr_techlog/prj_mainworklog_List.aspx?OBJID=5be9513b-4816-4864-952e-87779f9dcef4'
-        print('get_addlist cookies is ++++++++++++++++',
-              session['cookie'])
         r = self.s.get(url=url, cookies=session['cookie'], headers=self.headers)
         e = BeautifulSoup(r.text)
         l = e.find_all("tr", class_='eosAjaxGridItem')
@@ -103,8 +98,6 @@ class Fuckzb(Model):
             'ctl00$content$s_prj_worklog$s_prj_worklog$e_prj': '',
             '__EVENTTARGET': '',
         }
-        print('delete_zb cookies is ++++++++++++++++',
-              session['cookie'])
         self.s.post(url=url, data=data, headers=self.headers, cookies=session['cookie'])
 
     def add_zb(self, date):
@@ -119,17 +112,14 @@ class Fuckzb(Model):
             '__EVENTTARGET': '',
         }
         r = self.s.post(url=url, data=data, headers=self.headers, cookies=session['cookie'])
-        print('add zb cookies is ++++++++++++++++',
-              session['cookie'])
-        print('from add_zb ------------', r.text)
-        return json.loads(r.text)['value']
+        if r.text.startswith('{'):
+            return json.loads(r.text)['value']
+        else:
+            e = BeautifulSoup(r.text)
+            l = e.form.get_text()
+            return l
 
-    def add_zb_detail(self, date, start_time, end_time, content, mainlog):
-        overwork = 2
-        overwork_hour = ''
-        if int(end_time[0:2]) > 18:
-            overwork = 1
-            overwork_hour = math.ceil(int(end_time[0:2]) - 18)
+    def add_zb_detail(self, date, start_time, end_time, content, mainlog, overwork = 2 , overwork_hour='',work_type='211'):
         url = 'http://58.30.224.47/iss/hr_techlog/prj_SubWorklog_AddOrEdit.aspx?PK=&MAINLOG=' + mainlog + '&DATE=' + date + '+00%3a00%3a00&DT=0.7084406246866846&Anthem_CallBack=true'
         data = {
             'Anthem_PageMethod': 'Client_Callback',
@@ -142,7 +132,7 @@ class Fuckzb(Model):
             'ctl00$content$v_prj_worklog$v_prj_worklog$sd_time': start_time,
             'ctl00$content$v_prj_worklog$v_prj_worklog$ed': date,
             'ctl00$content$v_prj_worklog$v_prj_worklog$ed_time': end_time,
-            'ctl00$content$v_prj_worklog$v_prj_worklog$e_WorkType': '211',
+            'ctl00$content$v_prj_worklog$v_prj_worklog$e_WorkType': work_type,
             'ctl00$content$v_prj_worklog$v_prj_worklog$e_Callno': '',
             'ctl00$content$v_prj_worklog$v_prj_worklog$e_CUSTOMER_ID': '中国邮政储蓄银行股份有限公司',
             'ctl00$content$v_prj_worklog$v_prj_worklog$e_CUSTOMER_ID_hid': 'b00ad122-3d71-4431-bb0f-4a2e7aeb7754',
@@ -155,6 +145,4 @@ class Fuckzb(Model):
             'ctl00$content$v_prj_worklog$v_prj_worklog$e5_hid': '',
             '__EVENTTARGET': '',
         }
-        print('add zb detail cookies is ++++++++++++++++',
-              session['cookie'])
         r = self.s.post(url=url, data=data, headers=self.headers, cookies=session['cookie'])
