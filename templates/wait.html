@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+    <script src="/static/js/jquery-3.0.0.min.js"></script>
+    <title>fuckzb</title>
+    <style>
+        .index-main-body {margin:0 auto;width:400px;height:100px;border:1px solid #000}
+    </style>
+</head>
+<body>
+    <div class="index-main-body">
+        <div class="index-header">
+            <img src="/static/img/timg.jpeg">
+        </div>
+        <div class="desk-front sign-flow clearfix sign-flow-simple">
+
+             <p>
+                {% for message in get_flashed_messages() %}
+                    {{ message }}
+                {% endfor %}
+            </p>
+        </div>
+    </div>
+    <script type="text/javascript" language="javascript">
+    $(window).on("unload", function(e) {
+        $.get("{{ url_for('.logout') }}");
+    });
+    </script>
+</body>
+</html>

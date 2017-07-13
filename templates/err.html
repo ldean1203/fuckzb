@@ -2,9 +2,15 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <script src="/static/js/jquery-3.0.0.min.js"></script>
     <title>error</title>
 </head>
 <body>
     <h1>{{ err }}</h1>
+    <script type="text/javascript" language="javascript">
+    $(window).on("unload", function(e) {
+        $.get("{{ url_for('.logout') }}");
+    });
+    </script>
 </body>
 </html>

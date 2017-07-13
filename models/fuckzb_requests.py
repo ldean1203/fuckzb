@@ -5,7 +5,35 @@ from bs4 import BeautifulSoup
 import random
 import math
 from models import Model
+from utils import log
 
+path = 'data/session.txt'
+
+def save(data):
+    """
+    本函数把一个 dict 或者 list 写入文件
+    data 是 dict 或者 list
+    path 是保存文件的路径
+    """
+    # json 是一个序列化/反序列化(上课会讲这两个名词) list/dict 的库
+    # indent 是缩进
+    # ensure_ascii=False 用于保存中文
+    s = json.dumps(data, indent=2, ensure_ascii=False)
+    with open(path, 'w+', encoding='utf-8') as f:
+        # log('save', path, s, data)
+        # f.write(s)
+        f.write(s)
+
+
+def load():
+    """
+    本函数从一个文件中载入数据并转化为 dict 或者 list
+    path 是保存文件的路径
+    """
+    with open(path, 'r', encoding='utf-8') as f:
+        s = f.read()
+        return json.loads(s)
+        # return s
 
 class Fuckzb(Model):
     def __init__(self):
@@ -18,14 +46,20 @@ class Fuckzb(Model):
         # self.d_cookies = requests.utils.dict_from_cookiejar(r.cookies)
 
     def yzm(self):
-        code = random.randint(1000000000, 9999999999)
-        url = 'http://58.30.224.47/CommonPages/EOS.ValidateCode.aspx?code={}'.format(code, )
-        r = self.s.get(url=url, headers=self.headers)
-        d_cookies = requests.utils.dict_from_cookiejar(r.cookies)
-        session['cookie'] = d_cookies
-        with open('static/img/{}.jpg'.format(code, ), 'wb') as f:
-            f.write(r.content)
-        return code
+        user_list = load()
+        if len(user_list) <= 1:
+            code = random.randint(1000000000, 9999999999)
+            url = 'http://58.30.224.47/CommonPages/EOS.ValidateCode.aspx?code={}'.format(code, )
+            r = self.s.get(url=url, headers=self.headers)
+            d_cookies = requests.utils.dict_from_cookiejar(r.cookies)
+            session['cookie'] = d_cookies
+            user_list.append(session['cookie'])
+            save(user_list)
+            with open('static/img/{}.jpg'.format(code, ), 'wb') as f:
+                f.write(r.content)
+            return code
+        else:
+            return 1
 
     def log(self, name, pwd, yzm):
         url = 'http://58.30.224.47/platform/passport/login.aspx?Anthem_CallBack=true'
@@ -41,7 +75,32 @@ class Fuckzb(Model):
             '__VIEWSTATEGENERATOR': 'F05B9FE7',
             'ctl00$content$platform_login$validatebox_validateInputControl': yzm,
         }
-        r = self.s.post(url=url, headers=self.headers, data=data, cookies=session['cookie'])
+        session['userid'] = name
+        user_list = load()
+        checked = 0
+        l = []
+        for i in user_list:
+            if len(session['cookie']) != 0:
+                if len(i) != 0:
+                    if "ASP.NET_SessionId" in i:
+                        if i["ASP.NET_SessionId"] == session["cookie"]["ASP.NET_SessionId"]:
+                            i['userid'] = name
+                            l.append(i)
+                    else:
+                        l.append(i)
+                # elif len(i) == 0:
+                #     user_list.remove(i)
+                else:
+                    checked = 1
+        if checked == 0:
+            l.append({'userid':name})
+        save(l)
+
+        if len(session['cookie']) == 0:
+            r = self.s.post(url=url, headers=self.headers, data=data, cookies=session['cookie'])
+            session['cookie'] = d_cookies = requests.utils.dict_from_cookiejar(r.cookies)
+        else:
+            r = self.s.post(url=url, headers=self.headers, data=data, cookies=session['cookie'])
         return json.loads(r.text)['value']
 
     def get_zblist(self):
@@ -61,7 +120,7 @@ class Fuckzb(Model):
                     content.append(i.contents[j].string)
             if len(content) > 5:
                 all_contents.append(content)
-        return all_contents
+        session['zblist'] = all_contents
 
     def get_addlist(self):
         url = 'http://58.30.224.47/iss/hr_techlog/prj_mainworklog_List.aspx?OBJID=5be9513b-4816-4864-952e-87779f9dcef4'
@@ -80,7 +139,7 @@ class Fuckzb(Model):
                     content.append(i.contents[j].string)
             if len(content) > 5:
                 all_contents.append(content)
-        return all_contents
+        session['zbaddlist'] = all_contents
 
     def delete_zb(self, del_id):
         url = 'http://58.30.224.47/iss/hr_techlog/prj_mainworklog_List.aspx?OBJID=5be9513b-4816-4864-952e-87779f9dcef4&Anthem_CallBack=true'
@@ -153,7 +212,7 @@ class Fuckzb(Model):
             'Anthem_PageMethod': 'Execute',
             'Anthem_UpdatePage': 'true',
             '__CLIENTPOSTDATA': 'e_sql|Scalar|S:{}'.format(item,),
-            '__VIEWSTATE': '%2FwEPDwULLTEyNzQ3NTczMzEPZBYCZg9kFgICAw9kFgQCAQ8PFgIeBUxvZ2VkZ2QWAmYPDxYCHgRUZXh0BagB5oqA5pyv5pel5b%2BXIC0%2BIDxhIGhyZWY9Ii4uLy4uL2lzcy9ocl90ZWNobG9nL3Byal9tYWlud29ya2xvZ19MaXN0LmFzcHg%2FT0JKSUQ9NWJlOTUxM2ItNDgxNi00ODY0LTk1MmUtODc3NzlmOWRjZWY0IiB0aXRsZT0i5pel5b%2BX5aGr5YaZIiB0YXJnZXQ9Il9zZWxmIj7ml6Xlv5floavlhpk8L2E%2BZGQCAw9kFgJmD2QWAmYPZBYIAgEPDxYCHwFlZGQCAg8QZGQWAWZkAgMPDxYCHwFlZGQCBA8PFgIfAWVkZGRmIjRrU2h7Od6jXlY%2FolvVG6bKSQ%3D%3D',
+            '__VIEWSTATE': '/wEPDwULLTEyNzQ3NTczMzEPZBYCZg9kFgICAw9kFgQCAQ8PFgIeBUxvZ2VkZ2QWAmYPDxYCHgRUZXh0BagB5oqA5pyv5pel5b+XIC0+IDxhIGhyZWY9Ii4uLy4uL2lzcy9ocl90ZWNobG9nL3Byal9tYWlud29ya2xvZ19MaXN0LmFzcHg/T0JKSUQ9NWJlOTUxM2ItNDgxNi00ODY0LTk1MmUtODc3NzlmOWRjZWY0IiB0aXRsZT0i5pel5b+X5aGr5YaZIiB0YXJnZXQ9Il9zZWxmIj7ml6Xlv5floavlhpk8L2E+ZGQCAw9kFgJmD2QWAmYPZBYIAgEPDxYCHwFlZGQCAg8QZGQWAWZkAgMPDxYCHwFlZGQCBA8PFgIfAWVkZGRmIjRrU2h7Od6jXlY/olvVG6bKSQ==',
             '__VIEWSTATEGENERATOR': '43C509D3',
             'ctl00$content$s_prj_worklog$s_prj_worklog$dt_Date_Start': '',
             'ctl00$content$s_prj_worklog$s_prj_worklog$dt_Date_End': '',
@@ -164,5 +223,15 @@ class Fuckzb(Model):
             'g_prj_worklog_item': item,
             '__EVENTTARGET': '',
         }
-        print(data)
-        # r = self.s.post(url = url , data = data, headers = self.headers, cookies = session['cookie'])
+        r = self.s.post(url = url , data = data, headers = self.headers, cookies = session['cookie'])
+
+    def logout(self, name):
+        print('its called!!!!!!!!!!!!!!!!!!!!')
+        user_list = load()
+        print(len(user_list))
+        for i in user_list:
+            if i["userid"] == session['userid']:
+                print('in the first if')
+                user_list.remove(i)
+        print(len(user_list))
+        save(user_list)

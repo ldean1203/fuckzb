@@ -39,7 +39,7 @@
     <div>
         <form method="post" action={{ url_for(".dayadd") }}>
             当天工作内容:<input type="text" name="content1" class="add_content1" value="驻场">
-            当天下班时间：<input type="text" name="end_time" value="18:00">
+            当天下班时间：<input type="text" name="end_time1" value="18:00">
             <select name="rest1" class="rest1">
                 <option value="211" selected="selected">驻场职守</option>
                 <option value="301">调休</option>
@@ -111,7 +111,7 @@
             </tbody>
         </table>
     </div>
-    <script>
+    <script type="text/javascript" language="javascript">
     $( ".rest" ).change(function() {
       <!--$(".add_content").val($( ".rest" ).$(":selected").text());-->
       $(".add_content").val($( ".rest" ).find("option:selected").text());
@@ -123,11 +123,15 @@
     });
 
     $(".addline1").click(function(){
-        alert($(".addline1").attr('class'))
         $(".addline1").before(function(n){
         return '<div class="newline' + n + '">内容：<input type="text" name="content" class="add_content" value="驻场">开始时间：<input type="text" name="start_time" value="9:00">结束时间：<input type="text" name="end_time" value="18:00"><select name="rest" class="rest"><option value="211" selected="selected">驻场职守</option><option value="301">调休</option><option value="302">年假</option></select></div>';
     });
        })
+
+    $(window).on("unload", function(e) {
+        alert('bye bye');
+        $.get("{{ url_for('.logout') }}");
+    });
     </script>
 </body>
 </html>

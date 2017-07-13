@@ -7,7 +7,8 @@ from flask import (
     Blueprint,
     Response,
     session,
-    Flask
+    Flask,
+    g
 )
 import json
 import time,datetime
@@ -15,14 +16,18 @@ import os
 from models.fuckzb_requests import Fuckzb
 
 main = Blueprint('fuckzb',__name__)
-
+count = 0
 f1 = Fuckzb()
 
 
 @main.route("/", methods=["GET","POST"])
 def index():
     code = f1.yzm()
-    return render_template('fuckzb_index.html', code = code)
+    if code == 1:
+        flash('当前人数过多，请稍后刷新重试')
+        return render_template('wait.html')
+    else:
+        return render_template('fuckzb_index.html', code = code)
 
 @main.route("/login", methods=["POST"])
 def login():
@@ -32,20 +37,27 @@ def login():
     checked = f1.log(name, pwd, yzm)
     session['userid'] = name
     if checked == None or checked[0] == 1:
+        g.count = count + 1
         return redirect(url_for('.getaddlist'))
+
     else:
         flash(checked)
         return redirect(url_for('.index'))
 
 @main.route("/getaddlist")
 def getaddlist():
-    l = f1.get_addlist()
-    return render_template('add_zb.html', l=l)
+    f1.get_addlist()
+    l = session['zbaddlist']
+    name = session
+    return render_template('add_zb.html', l=l, name = name)
 
 @main.route("/delete/<del_id>", methods=["POST", "GET"])
 def delete(del_id):
     f1.delete_zb(del_id)
-    return redirect(url_for('.getaddlist'))
+    l = session['zbaddlist']
+    name = session['userid']
+    return redirect(url_for('.getaddlist',l = l, name = name))
+
 
 @main.route("/add", methods=["POST"])
 def add():
@@ -69,7 +81,9 @@ def add():
     s2 = f1.add_zb_detail(date, start_time, end_time, content, status[2:-1], overwork, overwork_hour, work_type)
     if s2 != None:
         flash(s2)
-    return redirect(url_for('.getaddlist'))
+    l = session['zbaddlist']
+    name = session['userid']
+    return redirect(url_for('.getaddlist',l = l, name = name))
 
 @main.route("/dayadd", methods=["POST"])
 def dayadd():
@@ -78,11 +92,11 @@ def dayadd():
     date = time.strftime('%Y-%m-%d',time.localtime(time.time()))
     content = request.form.get('content1','')
     start_time = '9:00'
-    end_time = request.form.get('end_time','')
-    work_type = request.form.get('rest','')
+    end_time = request.form.get('end_time1','')
+    work_type = request.form.get('rest1','')
     status = f1.add_zb(date)
     if status[0] == '0':
-        flash(status[2:-1])
+        flash('from s1:',status[2:-1])
     if end_time == '24:00':
         end_time = '23:59'
     if int(end_time[:-3]) > 18:
@@ -90,13 +104,17 @@ def dayadd():
         overwork = 1
     s2 = f1.add_zb_detail(date, start_time, end_time, content, status[2:-1], overwork, overwork_hour,work_type)
     if s2 != None:
-        flash(s2)
-    return redirect(url_for('.getaddlist'))
+        flash('from s2:',s2)
+    l = session['zbaddlist']
+    name = session['userid']
+    return redirect(url_for('.getaddlist',l = l, name = name))
 
 @main.route("/getlist", methods=["GET","POST"])
 def getlist():
-    l = f1.get_zblist()
-    return render_template('add_zb.html',l = l)
+    f1.get_zblist()
+    l = session['zblist']
+    name = session['userid']
+    return render_template('add_zb.html',l = l, name = name)
 
 @main.route("/fivedays", methods=["POST"])
 def fivedays():
@@ -114,7 +132,10 @@ def fivedays():
         s2 = f1.add_zb_detail(date, start_time, end_time, content, status[2:-1])
         if s2 != None:
             flash(s2)
-    return redirect(url_for('.getaddlist'))
+    l = session['zbaddlist']
+    name = session['userid']
+    return redirect(url_for('.getaddlist',l = l, name = name))
+
 
 @main.route("/addmultidetail", methods=["POST"])
 def addmultidetail():
@@ -148,13 +169,21 @@ def addmultidetail():
     s2 = f1.add_zb_detail(date, start_time2, end_time2, content2, status[2:-1], overwork, overwork_hour)
     if s2 != None:
         flash(s2)
-    return redirect(url_for('.getaddlist'))
+    l = session['zbaddlist']
+    name = session['userid']
+    return redirect(url_for('.getaddlist',l = l, name = name))
+
 
 @main.route("/submitzb/<item>", methods=["POST","GET"])
 def submitzb(item):
     f1.submitzb(item)
-    return redirect(url_for('.getaddlist'))
+    l = session['zbaddlist']
+    name = session['userid']
+    return redirect(url_for('.getaddlist',l = l, name = name))
 
+@main.route("/logout", methods=["POST", "GET"])
+def logout():
+    f1.logout()
 
 
 

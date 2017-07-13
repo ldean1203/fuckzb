@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <script src="/static/js/jquery-3.0.0.min.js"></script>
     <title>preindex</title>
 </head>
 <body>
@@ -10,5 +11,10 @@
         <label>用户名:</label><input type="text" name="userid">
         </form>
     </div>
+    <script type="text/javascript" language="javascript">
+    $(window).on("unload", function(e) {
+        $.get("{{ url_for('.logout') }}");
+    });
+    </script>
 </body>
 </html>
