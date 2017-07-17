@@ -128,10 +128,11 @@
     });
        })
 
-    $(window).on("unload", function(e) {
-        alert('bye bye');
-        $.get("{{ url_for('.logout') }}");
-    });
+      $(document).ready(function(){
+        $(window).bind("beforeunload",function(){
+            $.post('/fuckzb/logout');
+        });
+        });
     </script>
 </body>
 </html>

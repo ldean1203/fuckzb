@@ -183,7 +183,7 @@ def submitzb(item):
 
 @main.route("/logout", methods=["POST", "GET"])
 def logout():
-    f1.logout()
+    f1.logout('deanliu')
 
 
 

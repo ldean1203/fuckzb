@@ -47,7 +47,7 @@ class Fuckzb(Model):
 
     def yzm(self):
         user_list = load()
-        if len(user_list) <= 10000000000000000:
+        if len(user_list) <= 1:
             code = random.randint(1000000000, 9999999999)
             url = 'http://58.30.224.47/CommonPages/EOS.ValidateCode.aspx?code={}'.format(code, )
             r = self.s.get(url=url, headers=self.headers)
@@ -226,12 +226,16 @@ class Fuckzb(Model):
         r = self.s.post(url = url , data = data, headers = self.headers, cookies = session['cookie'])
 
     def logout(self, name):
-        print('its called!!!!!!!!!!!!!!!!!!!!')
         user_list = load()
-        print(len(user_list))
-        for i in user_list:
-            if i["userid"] == session['userid']:
-                print('in the first if')
-                user_list.remove(i)
-        print(len(user_list))
+        print('session is ----------', session)
+        if len(session['cookie']) == 0:
+            print('session cookie lenth is 0')
+            user_list.pop()
+        elif len(session['cookie']) != 0:
+            for i in user_list:
+                print(i)
+                if len(i) == 0:
+                    continue
+                if i['ASP.NET_SessionId'] == session['cookie']['ASP.NET_SessionId']:
+                    user_list.remove(i)
         save(user_list)
