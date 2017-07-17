@@ -47,7 +47,7 @@ class Fuckzb(Model):
 
     def yzm(self):
         user_list = load()
-        if len(user_list) <= 1:
+        if len(user_list) <= 10000000000000000:
             code = random.randint(1000000000, 9999999999)
             url = 'http://58.30.224.47/CommonPages/EOS.ValidateCode.aspx?code={}'.format(code, )
             r = self.s.get(url=url, headers=self.headers)
