@@ -86,15 +86,21 @@
             <button type="submit">已提交列表</button>
         </form>
     </div>
+        <div style="float:left;">
+        <form method="post" action="{{ url_for(".lastfivedays")}}">
+            <button type="submit">上周正常上班，一键添加五天</button>
+        </form>
+    </div>
     <div>
+        <form method="post" action="{{ url_for(".submitall")}}">
         <table class="table table-striped table-hover">
             <tbody>
             <tr>
-               <td width="30">序号</td><td width="UNSORT">操作</td><td width="*">状态</td><td width="*">填写人</td><td width="*">日期</td><td width="*">工时</td><td width="*">加班工时</td><td width="*">内容</td><td width="*">审批时间</td><td width="*">审批意见</td><td width="*">审批人</td>
+                <td width="30"><button type="submit">全部提交</button></td><td width="UNSORT">操作</td><td width="*">状态</td><td width="*">填写人</td><td width="*">日期</td><td width="*">工时</td><td width="*">加班工时</td><td width="*">内容</td><td width="*">审批时间</td><td width="*">审批意见</td><td width="*">审批人</td>
             </tr>
             {% for i in l %}
                 <tr>
-                    <td>{{ i[2] }}</td>
+                    <td><input type="checkbox" checked name="sub" value="{{ i[1] }}"></td>
                     <td><a href={{ url_for('.submitzb',item = i[1] ) }}>提交</a>
                         <a href={{ url_for('.delete',del_id = i[1] ) }}>删除</a></td>
                     <td>{{ i[4] }}</td>
@@ -110,6 +116,7 @@
             {% endfor %}
             </tbody>
         </table>
+        </form>
     </div>
     <script type="text/javascript" language="javascript">
     $( ".rest" ).change(function() {
@@ -128,11 +135,11 @@
     });
        })
 
-      $(document).ready(function(){
-        $(window).bind("beforeunload",function(){
-            $.post('/fuckzb/logout');
-        });
-        });
+    window.onbeforeunload=function(event){
+        if(event.clientX>document.body.clientWidth && event.clientY < 0 || event.altKey){
+            $.post('/fuckzb/logout',{'code':{{ code }}});
+            }
+        }
     </script>
 </body>
 </html>

@@ -25,12 +25,12 @@ def save(data):
         f.write(s)
 
 
-def load():
+def load(p):
     """
     本函数从一个文件中载入数据并转化为 dict 或者 list
     path 是保存文件的路径
     """
-    with open(path, 'r', encoding='utf-8') as f:
+    with open(p, 'r', encoding='utf-8') as f:
         s = f.read()
         return json.loads(s)
         # return s
@@ -46,14 +46,16 @@ class Fuckzb(Model):
         # self.d_cookies = requests.utils.dict_from_cookiejar(r.cookies)
 
     def yzm(self):
-        user_list = load()
-        if len(user_list) <= 1:
+        user_list = load(path)
+        if len(user_list) <= 1111111123123123123:
             code = random.randint(1000000000, 9999999999)
             url = 'http://58.30.224.47/CommonPages/EOS.ValidateCode.aspx?code={}'.format(code, )
             r = self.s.get(url=url, headers=self.headers)
             d_cookies = requests.utils.dict_from_cookiejar(r.cookies)
             session['cookie'] = d_cookies
-            user_list.append(session['cookie'])
+            s = session['cookie']
+            s['code'] = code
+            user_list.append(s)
             save(user_list)
             with open('static/img/{}.jpg'.format(code, ), 'wb') as f:
                 f.write(r.content)
@@ -61,39 +63,42 @@ class Fuckzb(Model):
         else:
             return 1
 
-    def log(self, name, pwd, yzm):
+    def log(self, name, pwd, yzm, code):
+        session['cookie'].pop('code')
         url = 'http://58.30.224.47/platform/passport/login.aspx?Anthem_CallBack=true'
         data = {
             'Anthem_PageMethod': 'Client_Callback',
             'Anthem_UpdatePage': 'true',
-            # '__CLIENTPOSTDATA': 'platform_login%7CLogin%7CS%3A%3BS%3A'+ self.name +'%3BS%3A' + self.pwd + '%7C',
             '__CLIENTPOSTDATA': 'platform_login|Login|S:;S:{};S:{}|'.format(name, pwd),
             '__EVENTTARGET': '',
             '__EVENTARGUMENT': '',
-            # '__VIEWSTATE': '%2FwEPDwUJNTcyNDc5NTA3ZGSz3AtbmMvyRZeJPN43n2iVgAUaMg%3D%3D',
             '__VIEWSTATE': '/wEPDwUJNTcyNDc5NTA3ZGSz3AtbmMvyRZeJPN43n2iVgAUaMg==',
             '__VIEWSTATEGENERATOR': 'F05B9FE7',
             'ctl00$content$platform_login$validatebox_validateInputControl': yzm,
         }
+
         session['userid'] = name
-        user_list = load()
+        session['code'] = code
+        user_list = load(path)
         checked = 0
         l = []
         for i in user_list:
             if len(session['cookie']) != 0:
-                if len(i) != 0:
-                    if "ASP.NET_SessionId" in i:
-                        if i["ASP.NET_SessionId"] == session["cookie"]["ASP.NET_SessionId"]:
-                            i['userid'] = name
-                            l.append(i)
+                # if len(i) != 0:
+                if "ASP.NET_SessionId" in i:
+                    if i["ASP.NET_SessionId"] == session["cookie"]["ASP.NET_SessionId"]:
+                        i['userid'] = name
+                        l.append(i)
                     else:
                         l.append(i)
-                # elif len(i) == 0:
-                #     user_list.remove(i)
+            # elif len(i['userid']) != 0:
+            #     if i['userid'] == session['userid']:
+
+            else:
+                if len(i) == 0:
+                    l.append({'userid': name})
                 else:
-                    checked = 1
-        if checked == 0:
-            l.append({'userid':name})
+                    l.append(i)
         save(l)
 
         if len(session['cookie']) == 0:
@@ -101,7 +106,7 @@ class Fuckzb(Model):
             session['cookie'] = d_cookies = requests.utils.dict_from_cookiejar(r.cookies)
         else:
             r = self.s.post(url=url, headers=self.headers, data=data, cookies=session['cookie'])
-        return json.loads(r.text)['value']
+        return json.loads(r.text)['value'], code
 
     def get_zblist(self):
         url = 'http://58.30.224.47/iss/hr_techlog/prj_mainworklogquery_List.aspx?OBJID=389012f1-384f-447c-98ee-b2d32d0e44e9'
@@ -225,17 +230,24 @@ class Fuckzb(Model):
         }
         r = self.s.post(url = url , data = data, headers = self.headers, cookies = session['cookie'])
 
-    def logout(self, name):
-        user_list = load()
-        print('session is ----------', session)
-        if len(session['cookie']) == 0:
-            print('session cookie lenth is 0')
-            user_list.pop()
-        elif len(session['cookie']) != 0:
-            for i in user_list:
-                print(i)
-                if len(i) == 0:
-                    continue
-                if i['ASP.NET_SessionId'] == session['cookie']['ASP.NET_SessionId']:
-                    user_list.remove(i)
+    def logout(self, code):
+        user_list = load(path)
+        # if len(session['cookie']) == 0 and len(session['userid']) == 0 and len(user_list) != 0:
+        #     user_list.pop()
+        # elif len(session['cookie']) != 0:
+        #     for i in user_list:
+        #         if len(i) == 0:
+        #             continue
+        #         if i['ASP.NET_SessionId'] == session['cookie']['ASP.NET_SessionId']:
+        #             user_list.remove(i)
+        # elif len(session['userid']) != 0:
+        #     for i in user_list:
+        #         if len(i) == 0:
+        #             continue
+        #         if i['userid'] == session['userid']:
+        #             user_list.remove(i)
+        for i in user_list:
+            if i['code'] == int(code):
+                user_list.remove(i)
         save(user_list)
+

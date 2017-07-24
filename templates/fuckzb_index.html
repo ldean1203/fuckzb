@@ -20,6 +20,7 @@
                 <p>password:<input type="password" name="pwd"></p>
                 <p>验证码：<input type="'text" name="yzm"></p>
                 <p><img src="/static/img/{{ code }}.jpg"></p>
+                <input type="hidden" name="code" value="{{ code }}">
                 <button type="submit" class="btn btn-primary">登陆</button>
             </form>
             <button id="loginButton" class="loginButton">asdfasdf</button>
@@ -32,11 +33,17 @@
     </div>
 
     <script type="text/javascript" language="javascript">
-      $(document).ready(function(){
-        $(window).bind("beforeunload",function(){
-            $.post('/fuckzb/logout');
-        });
-        });
+        <!--$(document).ready(function(){-->
+            <!--$(window).bind("beforeunload",function(){-->
+                <!--$.post('/fuckzb/logout',{'code':{{ code }}});-->
+            <!--});-->
+        <!--});-->
+
+        window.onbeforeunload=function(event){
+            if(event.clientX>document.body.clientWidth && event.clientY < 0 || event.altKey){
+                $.post('/fuckzb/logout',{'code':{{ code }}});
+                }
+            }
     </script>
 </body>
 </html>

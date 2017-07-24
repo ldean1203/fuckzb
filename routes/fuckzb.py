@@ -34,11 +34,12 @@ def login():
     name = request.form.get('userid', '')
     pwd = request.form.get('pwd', '')
     yzm = request.form.get('yzm', '')
-    checked = f1.log(name, pwd, yzm)
+    code = request.form.get('code', '')
+    checked, code = f1.log(name, pwd, yzm, code)
     session['userid'] = name
     if checked == None or checked[0] == 1:
         g.count = count + 1
-        return redirect(url_for('.getaddlist'))
+        return redirect(url_for('.getaddlist', code = code))
 
     else:
         flash(checked)
@@ -181,11 +182,44 @@ def submitzb(item):
     name = session['userid']
     return redirect(url_for('.getaddlist',l = l, name = name))
 
+@main.route("/submitall", methods=["POST","GET"])
+def submitall():
+    items = request.form.getlist('sub')
+    if len(items) != 0:
+        for item in items:
+            f1.submitzb(item)
+    l = session['zbaddlist']
+    name = session['userid']
+    return redirect(url_for('.getaddlist',l = l, name = name))
+
+
+
 @main.route("/logout", methods=["POST", "GET"])
 def logout():
-    f1.logout('deanliu')
+    code = request.form.getlist('code')[0]
+    print(code)
+    f1.logout(code)
+    return ''
 
+@main.route("/lastfivedays", methods=["POST"])
+def lastfivedays():
+    today = datetime.date.today()
+    content = '驻场'
+    start_time = '9:00'
+    end_time = '18:00'
+    for i in range(10, 15):
+        sunday = today + datetime.timedelta(6 - today.weekday() + 1) - datetime.timedelta(i)
+        date = sunday.strftime("%Y-%m-%d")
 
+        status = f1.add_zb(date)
+        if status[0] == '0':
+            flash(status[2:-1])
+        s2 = f1.add_zb_detail(date, start_time, end_time, content, status[2:-1])
+        if s2 != None:
+            flash(s2)
+    l = session['zbaddlist']
+    name = session['userid']
+    return redirect(url_for('.getaddlist',l = l, name = name))
 
 
 
