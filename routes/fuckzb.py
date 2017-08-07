@@ -79,6 +79,8 @@ def add():
     if int(end_time[:-3]) > 18:
         overwork_hour = int(end_time[:-3]) - 18
         overwork = 1
+        if int(end_time[:-3]) > 23:
+            overwork_hour = 6
     s2 = f1.add_zb_detail(date, start_time, end_time, content, status[2:-1], overwork, overwork_hour, work_type)
     if s2 != None:
         flash(s2)
@@ -103,6 +105,8 @@ def dayadd():
     if int(end_time[:-3]) > 18:
         overwork_hour = int(end_time[:-3]) - 18
         overwork = 1
+        if int(end_time[:-3]) > 23:
+            overwork_hour = 6
     s2 = f1.add_zb_detail(date, start_time, end_time, content, status[2:-1], overwork, overwork_hour,work_type)
     if s2 != None:
         flash('from s2:',s2)
@@ -164,6 +168,8 @@ def addmultidetail():
     if int(end_time2[:-3]) > 18:
         overwork_hour = int(end_time2[:-3]) - 18
         overwork = 1
+        if int(end_time2[:-3]) > 23:
+            overwork_hour = 6
     else:
         overwork_hour = ''
         overwork = 2
@@ -220,8 +226,3 @@ def lastfivedays():
     l = session['zbaddlist']
     name = session['userid']
     return redirect(url_for('.getaddlist',l = l, name = name))
-
-
-
-
-
