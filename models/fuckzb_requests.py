@@ -204,8 +204,8 @@ class Fuckzb(Model):
             'ctl00$content$v_prj_worklog$v_prj_worklog$e_Callno': '',
             'ctl00$content$v_prj_worklog$v_prj_worklog$e_CUSTOMER_ID': '中国邮政储蓄银行股份有限公司',
             'ctl00$content$v_prj_worklog$v_prj_worklog$e_CUSTOMER_ID_hid': 'b00ad122-3d71-4431-bb0f-4a2e7aeb7754',
-            'ctl00$content$v_prj_worklog$v_prj_worklog$e_PROJECT_ID': '中国邮政储蓄银行股份有限公司-中国邮政储蓄银行邮政金融计算机系统硬件设备维护服务采购合同-16-2207',
-            'ctl00$content$v_prj_worklog$v_prj_worklog$e_PROJECT_ID_hid': '99586bd0-4ffa-4863-94a5-fb16aef24a6a',
+            'ctl00$content$v_prj_worklog$v_prj_worklog$e_PROJECT_ID': '中国邮政储蓄银行股份有限公司-中国邮政储蓄银行邮政金融计算机系统硬件维保服务项目空白期第一次备件申请-17-2492',
+            'ctl00$content$v_prj_worklog$v_prj_worklog$e_PROJECT_ID_hid': '86a3a924-7a14-44e3-8432-0c7484938033',
             'ctl00$content$v_prj_worklog$v_prj_worklog$e_sqkh': '',
             'ctl00$content$v_prj_worklog$v_prj_worklog$e_sfjb': overwork,  # 1为加班
             'ctl00$content$v_prj_worklog$v_prj_worklog$e_ADDHOUR': overwork_hour,  # 加班小时
