@@ -1,7 +1,6 @@
 import requests
 from flask import session, request
 import json
-from PIL import ImageTk, Image
 from bs4 import BeautifulSoup
 import random
 import math
