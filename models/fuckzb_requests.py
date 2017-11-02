@@ -1,6 +1,7 @@
 import requests
 from flask import session, request
 import json
+from PIL import ImageTk, Image
 from bs4 import BeautifulSoup
 import random
 import math
@@ -41,6 +42,7 @@ class Fuckzb(Model):
         self.headers = {
             'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_5) AppleWebKit/603.2.4 (KHTML, like Gecko) '
                           'Version/10.1.1 Safari/603.2.4',
+            'host': '58.30.224.47:8888',
         }
         # r = self.s.get('http://58.30.224.47:8888/platform/passport/login.aspx', headers = self.headers)
         # self.d_cookies = requests.utils.dict_from_cookiejar(r.cookies)
@@ -50,21 +52,24 @@ class Fuckzb(Model):
         if len(user_list) <= 1111111123123123123:
             code = random.randint(1000000000, 9999999999)
             url = 'http://58.30.224.47:8888/CommonPages/EOS.ValidateCode.aspx?code={}'.format(code, )
-            r = self.s.get(url=url, headers=self.headers)
+            r = self.s.post(url=url, headers=self.headers)
             d_cookies = requests.utils.dict_from_cookiejar(r.cookies)
             session['cookie'] = d_cookies
             s = session['cookie']
             s['code'] = code
             user_list.append(s)
             save(user_list)
-            with open('static/img/{}.jpg'.format(code, ), 'wb') as f:
+            with open('static/img/{}.png'.format(code, ), 'wb') as f:
                 f.write(r.content)
+            # im = Image.open('../static/img/{}.png'.format(code, ))
+            # im.save('../static/img/{}.jpg'.format(code, ))
             return code
         else:
             return 1
 
     def log(self, name, pwd, yzm, code):
         session['cookie'].pop('code')
+        print('call the log func')
         url = 'http://58.30.224.47:8888/platform/passport/login.aspx?Anthem_CallBack=true'
         data = {
             'Anthem_PageMethod': 'Client_Callback',
@@ -107,11 +112,16 @@ class Fuckzb(Model):
             session['cookie'] = d_cookies = requests.utils.dict_from_cookiejar(r.cookies)
         else:
             r = self.s.post(url=url, headers=self.headers, data=data, cookies=session['cookie'])
+        r = self.s.post(url=url, headers=self.headers, data=data)
         return json.loads(r.text)['value'], code
+        # print(r.text)
+        # print(json.loads(r.text)['value'], code)
+        # return json.loads(r.text)['value']
 
     def get_zblist(self):
         url = 'http://58.30.224.47:8888/iss/hr_techlog/prj_mainworklogquery_List.aspx?OBJID=389012f1-384f-447c-98ee-b2d32d0e44e9'
-        r = self.s.get(url=url, cookies=session['cookie'], headers=self.headers)
+        # r = self.s.get(url=url, cookies=session['cookie'], headers=self.headers)
+        r = self.s.get(url=url, headers=self.headers)
         e = BeautifulSoup(r.text)
         l = e.find_all("tr", class_='eosAjaxGridItem')
         all_contents = []
@@ -126,11 +136,13 @@ class Fuckzb(Model):
                     content.append(i.contents[j].string)
             if len(content) > 5:
                 all_contents.append(content)
+        # print(all_contents)
+        # return all_contents
         session['zblist'] = all_contents
 
     def get_addlist(self):
         url = 'http://58.30.224.47:8888/iss/hr_techlog/prj_mainworklog_List.aspx?OBJID=5be9513b-4816-4864-952e-87779f9dcef4'
-        r = self.s.get(url=url, cookies=session['cookie'], headers=self.headers)
+        r = self.s.get(url=url, headers=self.headers)
         e = BeautifulSoup(r.text)
         l = e.find_all("tr", class_='eosAjaxGridItem')
         all_contents = []
@@ -164,7 +176,7 @@ class Fuckzb(Model):
             'ctl00$content$s_prj_worklog$s_prj_worklog$e_prj': '',
             '__EVENTTARGET': '',
         }
-        self.s.post(url=url, data=data, headers=self.headers, cookies=session['cookie'])
+        self.s.post(url=url, data=data, headers=self.headers)
 
     def add_zb(self, date):
         url = 'http://58.30.224.47:8888/iss/hr_techlog/prj_mainworklog_AddOrEdit.aspx?DT=0.5859502467063469&Anthem_CallBack=true'
@@ -178,7 +190,7 @@ class Fuckzb(Model):
             'ctl00$content$v_prj_worklog$v_prj_worklog$sd': date,
             '__EVENTTARGET': '',
         }
-        r = self.s.post(url=url, data=data, headers=self.headers, cookies=session['cookie'])
+        r = self.s.post(url=url, data=data, headers=self.headers)
         if r.text.startswith('{'):
             return json.loads(r.text)['value']
         else:
@@ -213,7 +225,7 @@ class Fuckzb(Model):
             'ctl00$content$v_prj_worklog$v_prj_worklog$e5_hid': '',
             '__EVENTTARGET': '',
         }
-        r = self.s.post(url=url, data=data, headers=self.headers, cookies=session['cookie'])
+        r = self.s.post(url=url, data=data, headers=self.headers)
 
     def submitzb(self, item):
         url = 'http://58.30.224.47:8888/iss/hr_techlog/prj_mainworklog_List.aspx?OBJID=5be9513b-4816-4864-952e-87779f9dcef4&Anthem_CallBack=true'
@@ -233,26 +245,4 @@ class Fuckzb(Model):
             'g_prj_worklog_item': item,
             '__EVENTTARGET': '',
         }
-        r = self.s.post(url = url , data = data, headers = self.headers, cookies = session['cookie'])
-
-    def logout(self, code):
-        user_list = load(path)
-        # if len(session['cookie']) == 0 and len(session['userid']) == 0 and len(user_list) != 0:
-        #     user_list.pop()
-        # elif len(session['cookie']) != 0:
-        #     for i in user_list:
-        #         if len(i) == 0:
-        #             continue
-        #         if i['ASP.NET_SessionId'] == session['cookie']['ASP.NET_SessionId']:
-        #             user_list.remove(i)
-        # elif len(session['userid']) != 0:
-        #     for i in user_list:
-        #         if len(i) == 0:
-        #             continue
-        #         if i['userid'] == session['userid']:
-        #             user_list.remove(i)
-        for i in user_list:
-            if i['code'] == int(code):
-                user_list.remove(i)
-        save(user_list)
-
+        r = self.s.post(url = url , data = data, headers = self.headers)

@@ -79,7 +79,7 @@ def add():
     if int(end_time[:-3]) > 18:
         overwork_hour = int(end_time[:-3]) - 18
         overwork = 1
-        if int(end_time[:-3]) > 23:
+        if int(end_time[:-3]) >= 23:
             overwork_hour = 6
     s2 = f1.add_zb_detail(date, start_time, end_time, content, status[2:-1], overwork, overwork_hour, work_type)
     if s2 != None:
