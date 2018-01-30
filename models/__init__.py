@@ -1,6 +1,7 @@
+# -*- coding: UTF-8 -*-
 import json
 import time
-from utils import log
+
 
 
 def save(data, path):

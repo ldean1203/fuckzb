@@ -1,3 +1,4 @@
+# -*- coding: UTF-8 -*-
 from flask import (
     render_template,
     request,
@@ -66,21 +67,23 @@ def add():
     overwork = 2
     work_type = '211'
     date = request.form.get('date','')
-    content = request.form.get('content','')
+    content = request.form.get(u'content','')
     start_time = request.form.get('start_time','')
     end_time = request.form.get('end_time','')
     work_type = request.form.get('rest','')
+    if int(end_time[:-3]) > 18:
+        overwork_hour = int(end_time[:-3]) - 18
+        overwork = 1
+        if int(end_time[:-3]) > 23:
+            overwork_hour = 6
     if end_time == '24:00':
         end_time = '23:59'
     status = f1.add_zb(date)
     if status[0] == '0':
         flash(status[2:-1])
         return redirect(url_for('.getaddlist'))
-    if int(end_time[:-3]) > 18:
-        overwork_hour = int(end_time[:-3]) - 18
-        overwork = 1
-        if int(end_time[:-3]) >= 23:
-            overwork_hour = 6
+
+
     s2 = f1.add_zb_detail(date, start_time, end_time, content, status[2:-1], overwork, overwork_hour, work_type)
     if s2 != None:
         flash(s2)
@@ -93,20 +96,22 @@ def dayadd():
     overwork_hour = ''
     overwork = 2
     date = time.strftime('%Y-%m-%d',time.localtime(time.time()))
-    content = request.form.get('content1','')
+    content = request.form.get(u'content1','')
     start_time = '9:00'
     end_time = request.form.get('end_time1','')
     work_type = request.form.get('rest1','')
     status = f1.add_zb(date)
     if status[0] == '0':
         flash('from s1:',status[2:-1])
-    if end_time == '24:00':
-        end_time = '23:59'
     if int(end_time[:-3]) > 18:
         overwork_hour = int(end_time[:-3]) - 18
         overwork = 1
         if int(end_time[:-3]) > 23:
             overwork_hour = 6
+
+    if end_time == '24:00':
+        end_time = '23:59'
+
     s2 = f1.add_zb_detail(date, start_time, end_time, content, status[2:-1], overwork, overwork_hour,work_type)
     if s2 != None:
         flash('from s2:',s2)
@@ -124,7 +129,7 @@ def getlist():
 @main.route("/fivedays", methods=["POST"])
 def fivedays():
     today = datetime.date.today()
-    content = '驻场'
+    content = u'驻场'
     start_time = '9:00'
     end_time = '18:00'
     for i in range(3,8):
@@ -144,36 +149,27 @@ def fivedays():
 
 @main.route("/addmultidetail", methods=["POST"])
 def addmultidetail():
-    overwork_hour = ''
-    overwork = 2
     date = request.form.get('date1','')
-    content1 = request.form.get('content1','')
+    content1 = request.form.get(u'content1','')
     start_time1 = request.form.get('start_time1','')
     end_time1 = request.form.get('end_time1','')
-    content2 = request.form.get('content2','')
+    content2 = request.form.get(u'content2','')
     start_time2 = request.form.get('start_time2','')
     end_time2 = request.form.get('end_time2','')
-    jb = request.form.get('jb','')
     status = f1.add_zb(date)
     if status[0] == '0':
         flash(status[2:-1])
-    if jb == 'on':
-        overwork_hour = int(end_time1[:-3])
-        overwork = 1
+    overwork_hour = int(end_time1[:-3])
+    overwork = 1
     s1 = f1.add_zb_detail(date, start_time1, end_time1, content1, status[2:-1], overwork, overwork_hour)
     if s1 != None:
         flash(s1)
-    if end_time2 == '24:00':
-        end_time2 = '23:59'
-    if int(end_time2[:-3]) > 18:
-        overwork_hour = int(end_time2[:-3]) - 18
-        overwork = 1
-        if int(end_time2[:-3]) > 23:
-            overwork_hour = 6
-    else:
-        overwork_hour = ''
-        overwork = 2
-    s2 = f1.add_zb_detail(date, start_time2, end_time2, content2, status[2:-1], overwork, overwork_hour)
+    overwork = 2
+    start_time2 = '9:00'
+    end_time2 = '18:00'
+    content2 = u'调休'
+    work_type = 301
+    s2 = f1.add_zb_detail(date, start_time2, end_time2, content2, status[2:-1], overwork,work_type=work_type)
     if s2 != None:
         flash(s2)
     l = session['zbaddlist']
@@ -203,14 +199,13 @@ def submitall():
 @main.route("/logout", methods=["POST", "GET"])
 def logout():
     code = request.form.getlist('code')[0]
-    print(code)
     f1.logout(code)
     return ''
 
 @main.route("/lastfivedays", methods=["POST"])
 def lastfivedays():
     today = datetime.date.today()
-    content = '驻场'
+    content = u'驻场'
     start_time = '9:00'
     end_time = '18:00'
     for i in range(10, 15):

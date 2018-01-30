@@ -50,17 +50,13 @@
     </div>
     <hr />
     <div>
-        <p><lable>暂时没管凌晨加班，上午调休，下午上班需要填3条的情况，后续加入</lable></p>
+        <p><lable>加班到两点后，当天调休</lable></p>
         <form method=post action={{ url_for(".addmultidetail") }}>
             日期：<input type="text" name="date1" >
             内容1：<input type="text" name="content1">
             开始时间1：<input type="text" name="start_time1" value="0:00">
             结束时间1：<input type="text" name="end_time1">
-            加班：<input type="checkbox" name="jb">
             <p class="pos_p">
-            内容2：<input type="text" name="content2">
-            开始时间2：<input type="text" name="start_time2">
-            结束时间2：<input type="text" name="end_time2" value="18:00">
 
             <button type="submit">添加</button>
             </p>
